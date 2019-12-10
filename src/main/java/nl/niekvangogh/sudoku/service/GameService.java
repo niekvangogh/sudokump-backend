@@ -14,6 +14,10 @@ public interface GameService {
 
     void onPlayerDisconnect(Game game, Player player);
 
-    void onPlayerSubmitTile(Game game, Player player, Tile tile, TileValue value);
+    void onPlayerSubmitTile(Game game, Player player, Tile tile, int value);
+
+    void onPlayerAddPotentialTile(Game game, Player player, Tile tile, int value);
+
+    void onPlayerRemovePotentialTile(Game game, Player player, Tile tile, int value);
 
 }
