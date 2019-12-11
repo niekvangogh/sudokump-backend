@@ -1,6 +1,7 @@
 package nl.niekvangogh.sudoku.pojo.sudoku;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,10 @@ public class Tile {
     }
 
     @Getter
+    @Setter
     private int solution;
 
+    @Setter
     @Getter
     private int guess;
 
