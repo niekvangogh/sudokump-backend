@@ -12,20 +12,20 @@ public class Sudoku {
     private final int size;
 
     @Getter
-    private final double sqr;
+    private final int sqrt;
 
     @Getter
     private Tile[][] grid;
 
     private Sudoku(long seed, int size) {
         this.randomGenerator = new Random(seed);
-        this.grid = new Tile[9][9];
+        this.grid = new Tile[size][size];
+
         this.size = size;
-        this.sqr = Math.sqrt(size);
+        this.sqrt = (int) Math.sqrt(size);
 
-
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
+        for (int x = 0; x < this.getSize(); x++) {
+            for (int y = 0; y < this.getSize(); y++) {
                 this.grid[x][y] = new Tile(x, y, 0);
             }
         }

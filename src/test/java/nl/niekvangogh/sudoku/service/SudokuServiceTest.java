@@ -19,6 +19,12 @@ class SudokuServiceTest {
     }
 
     @Test
+    void canGenerateSudokuOf81By81() {
+        Sudoku sudoku = this.sudokuService.generateSudoku(25);
+        SudokUtils.printSudoku(sudoku.getGrid());
+    }
+
+    @Test
     void generateSudoku__ShouldGenerateCompletedSudoku() {
         Sudoku sudoku = this.sudokuService.generateSudoku();
         for (Tile[] tiles : sudoku.getGrid()) {
@@ -33,9 +39,9 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
 
-        for (int i = 0; i < 3; i++) {
-            int x = i * 3;
-            int y = i * 3;
+        for (int i = 0; i < sudoku.getSqrt(); i++) {
+            int x = i * sudoku.getSqrt();
+            int y = i * sudoku.getSqrt();
             Tile[] box = this.sudokuService.getBox(sudoku, x, y);
             for (Tile tile : box) {
                 assertTrue(tile.getSolution() != 0);
@@ -49,8 +55,8 @@ class SudokuServiceTest {
         this.sudokuService.fillDiagonal(sudoku);
         SudokUtils.printSudoku(sudoku.getGrid());
 
-        for (int i = 0; i < 3; i++) {
-            Tile[] box = this.sudokuService.getBox(sudoku, i * 3, i * 3);
+        for (int i = 0; i < sudoku.getSqrt(); i++) {
+            Tile[] box = this.sudokuService.getBox(sudoku, i * sudoku.getSqrt(), i * sudoku.getSqrt());
             for (Tile tile : box) {
                 int current = tile.getSolution();
                 tile.setSolution(0);
@@ -78,7 +84,7 @@ class SudokuServiceTest {
 
         Tile[] box = this.sudokuService.getBox(sudoku, tile.getXPos(), tile.getYPos());
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < sudoku.getSize(); i++) {
             Tile boxTile = box[0];
             assertFalse(this.sudokuService.isUnusedInBox(sudoku, boxTile, boxTile.getSolution()));
             assertFalse(this.sudokuService.isUnusedInCol(sudoku, boxTile.getYPos(), boxTile.getSolution()));
@@ -96,12 +102,12 @@ class SudokuServiceTest {
 
         Tile[] box = this.sudokuService.getBox(sudoku, xPos, yPos);
 
-        int startY = (yPos / 3) * 3;
-        int startX = (xPos / 3) * 3;
+        int startY = (yPos / sudoku.getSqrt()) * sudoku.getSqrt();
+        int startX = (xPos / sudoku.getSqrt()) * sudoku.getSqrt();
 
         long tileAmount = Arrays.stream(box).filter(tile -> {
-            for (int x = startX; x < startX + 3; x++) {
-                for (int y = startY; y < startY + 3; y++) {
+            for (int x = startX; x < startX + sudoku.getSqrt(); x++) {
+                for (int y = startY; y < startY + sudoku.getSqrt(); y++) {
                     if (tile.getXPos() == x && tile.getYPos() == y) {
                         return true;
                     }
@@ -110,14 +116,14 @@ class SudokuServiceTest {
             return false;
         }).count();
 
-        assertEquals(9, tileAmount);
+        assertEquals(sudoku.getSize(), tileAmount);
     }
 
     @Test
     void checkIfSafe_GivenUnSafeLocation_ShouldReturnFalse() {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
-        Tile filledTile = sudoku.getGrid()[3][0];
+        Tile filledTile = sudoku.getGrid()[sudoku.getSqrt()][0];
         Tile newTile = sudoku.getGrid()[4][0];
 
         assertFalse(this.sudokuService.checkIfSafe(sudoku, newTile, filledTile.getSolution()));
@@ -133,7 +139,7 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         Tile tile = sudoku.getGrid()[0][0];
 
-        assertTrue(this.sudokuService.isUnusedInBox(sudoku, tile, 3));
+        assertTrue(this.sudokuService.isUnusedInBox(sudoku, tile, sudoku.getSqrt()));
     }
 
     @Test
@@ -145,7 +151,7 @@ class SudokuServiceTest {
             tile.setSolution(i);
         }
 
-        assertTrue(this.sudokuService.isUnusedInBox(sudoku, box[0], 9));
+        assertTrue(this.sudokuService.isUnusedInBox(sudoku, box[0], sudoku.getSize()));
     }
 
     @Test
@@ -161,7 +167,7 @@ class SudokuServiceTest {
 
         assertFalse(this.sudokuService.isUnusedInBox(sudoku, box[0], box[4].getSolution()));
     }
-    
+
     @Test
     void fillTile_GivenFillableTile_ShouldReturnTrue() {
         Sudoku sudoku = new Sudoku();

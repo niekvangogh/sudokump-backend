@@ -10,8 +10,9 @@ public interface SudokuService {
      * This method generates a filled Sudoku
      *
      * @return a solved Sudoku
+     * @param i
      */
-    Sudoku generateSudoku();
+    Sudoku generateSudoku(int i);
 
     /**
      * Fills the diagonal of a sudoku, with random numbers which makes it solvable for the algorithm
