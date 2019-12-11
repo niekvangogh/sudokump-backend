@@ -90,7 +90,8 @@ public interface SudokuService {
      * function which fills a remaining tiles in the Sudoku
      *
      * @param sudoku The Sudoku which is going to be filled
-     * @param tile   The tile which is going to be filled
+     * @param x      The x coords of the tile which is going to be filled
+     * @param y      The y coords of the tile which is going to be filled
      * @return a boolean, if true, it has been finished, if false, it hasn't
      */
     boolean fillTile(Sudoku sudoku, int x, int y);

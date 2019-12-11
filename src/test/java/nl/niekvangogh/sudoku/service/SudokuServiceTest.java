@@ -23,7 +23,7 @@ class SudokuServiceTest {
         Sudoku sudoku = this.sudokuService.generateSudoku();
         for (Tile[] tiles : sudoku.getGrid()) {
             for (Tile tile : tiles) {
-                assertEquals(0, tile.getSolution());
+                assertNotEquals(0, tile.getSolution());
             }
         }
     }

@@ -24,7 +24,7 @@ public class Tile {
 
     @Getter
     @Setter
-    private int solution;
+    private int solution = 0;
 
     @Setter
     @Getter
