@@ -83,7 +83,10 @@ class SudokuServiceTest {
 
         for (int i = 0; i < 9; i++) {
             Tile boxTile = box[0];
-            assertTrue(this.sudokuService.checkIfSafe(sudoku, boxTile, boxTile.getSolution()));
+            assertFalse(this.sudokuService.isUnusedInBox(sudoku, boxTile, boxTile.getSolution()));
+            assertFalse(this.sudokuService.isUnusedInCol(sudoku, boxTile.getYPos(), boxTile.getSolution()));
+            assertFalse(this.sudokuService.isUnusedInRow(sudoku, boxTile.getXPos(), boxTile.getSolution()));
+
         }
     }
 

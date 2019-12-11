@@ -46,13 +46,11 @@ public class SudokuServiceImpl implements SudokuService {
 
     @Override
     public Tile[] getBox(Sudoku sudoku, int xPos, int yPos) {
-        int startX = (xPos / 3) * 3;
-        int startY = (yPos / 3) * 3;
-
         Tile[] tiles = new Tile[9];
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                tiles[(3 * y) + x] = this.getTile(sudoku, startX + x, startY + y);
+        for (int boxX = 0; boxX < 3; boxX++) {
+            for (int boxY = 0; boxY < 3; boxY++) {
+                Tile tile = sudoku.getGrid()[(xPos / 3 * 3) + boxX][(yPos / 3 * 3) + boxY];
+                tiles[(boxX * 3) + boxY] = tile;
             }
         }
         return tiles;
@@ -67,8 +65,14 @@ public class SudokuServiceImpl implements SudokuService {
 
     @Override
     public boolean isUnusedInBox(Sudoku sudoku, Tile tile, int value) {
-        Tile[] box = this.getBox(sudoku, tile.getXPos(), tile.getYPos());
-        return Arrays.stream(box).noneMatch(boxTile -> boxTile.getSolution() == value);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (sudoku.getGrid()[(tile.getXPos() / 3 * 3) + i][(tile.getYPos() / 3 * 3) + j].getSolution() == value) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
