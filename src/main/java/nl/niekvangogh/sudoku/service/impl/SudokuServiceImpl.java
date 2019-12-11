@@ -20,14 +20,14 @@ public class SudokuServiceImpl implements SudokuService {
 
     @Override
     public void fillDiagonal(Sudoku sudoku) {
-        for (int i = 0; i < 9; i = i + 3) {
-            System.out.println(i);
-            this.fillBox(sudoku, this.getTile(sudoku, i, i));
+        for (int i = 0; i < 3; i++) {
+            this.fillBox(sudoku, this.getTile(sudoku, i * 3, i * 3));
         }
     }
 
     @Override
     public void fillBox(Sudoku sudoku, Tile tile) {
+        Tile[] tiles = this.getBox(sudoku, tile.getXPos(), tile.getYPos());
         int num;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -36,9 +36,10 @@ public class SudokuServiceImpl implements SudokuService {
                 }
                 while (!this.isUnusedInBox(sudoku, tile, num));
 
-                Tile[] tiles = this.getBox(sudoku, tile.getXPos(), tile.getYPos());
-                // requires refactoring
-                sudoku.getGrid()[tiles[0].getXPos() + i][tiles[0].getYPos() + j].setSolution(num);
+                int x = tiles[0].getXPos() + i;
+                int y = tiles[0].getYPos() + j;
+
+                sudoku.getGrid()[x][y].setSolution(num);
             }
         }
 

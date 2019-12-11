@@ -1,5 +1,6 @@
 package nl.niekvangogh.sudoku.service;
 
+import nl.niekvangogh.sudoku.SudokUtils;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.impl.SudokuServiceImpl;
@@ -32,9 +33,11 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
 
+        SudokUtils.printSudoku(sudoku.getGrid());
+
         for (int i = 0; i < 3; i++) {
-            int x = (i + 1) * 3;
-            int y = (i + 1) * 3;
+            int x = i * 3;
+            int y = i * 3;
             Tile[] box = this.sudokuService.getBox(sudoku, x, y);
             for (Tile tile : box) {
                 assertTrue(tile.getSolution() != 0);
