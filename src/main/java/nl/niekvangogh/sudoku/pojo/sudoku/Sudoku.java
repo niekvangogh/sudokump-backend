@@ -2,11 +2,12 @@ package nl.niekvangogh.sudoku.pojo.sudoku;
 
 import lombok.Getter;
 
-import java.util.List;
-
 public class Sudoku {
 
-
     @Getter
-    private List<Box> boxes;
+    private Tile[][] grid;
+
+    public Sudoku() {
+        this.grid = new Tile[9][9];
+    }
 }

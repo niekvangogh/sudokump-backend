@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table("players")
+@Table(name = "players")
 public class Player extends AbstractBaseEntity {
 
     @OneToOne

@@ -6,6 +6,8 @@ import nl.niekvangogh.sudoku.pojo.Ranking;
 
 public interface GameManagerService {
 
+    void queuePlayer(Player player);
+
     Game createGame(Ranking ranking);
 
     Game findGame(Player player);

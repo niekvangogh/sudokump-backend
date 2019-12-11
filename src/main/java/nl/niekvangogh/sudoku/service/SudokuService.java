@@ -30,6 +30,15 @@ public interface SudokuService {
      */
     void fillBox(Sudoku sudoku, Tile tile);
 
+    /**
+     * Gets the box of the provided coordinates
+     *
+     * @param sudoku The Sudoku which needs to be checked
+     * @param x      the X coordinates
+     * @param y      the Y coordinates
+     */
+    Tile[] getBox(Sudoku sudoku, int x, int y);
+
 
     /**
      * Checks if the tile provided can be filled with a number.
@@ -37,8 +46,9 @@ public interface SudokuService {
      * @param sudoku The Sudoku
      * @param tile   The tile which is going to be checked in the Sudoku
      * @param value  The value which is going to be filled in the tile
+     * @return returns true if the value in the tile is safe
      */
-    void checkIfSafe(Sudoku sudoku, Tile tile, int value);
+    boolean checkIfSafe(Sudoku sudoku, Tile tile, int value);
 
     /**
      * Checks if the value is already somewhere in the box
@@ -75,4 +85,13 @@ public interface SudokuService {
      */
     void createPuzzle(Sudoku sudoku, int amount);
 
+    /**
+     * Gets a Tile in a Sudoku
+     *
+     * @param sudoku the Sudoku which is going to be checked on
+     * @param x      the x coordinates
+     * @param y      the y coordinates
+     * @return the Tile associated with the provided coordinates
+     */
+    Tile getTile(Sudoku sudoku, int x, int y);
 }

@@ -25,7 +25,7 @@ public class Tile {
     private int solution;
 
     @Getter
-    private int value;
+    private int guess;
 
     @Getter
     private List<Integer> potentialSolutions;

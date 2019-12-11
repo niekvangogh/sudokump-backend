@@ -1,0 +1,43 @@
+create table users
+(
+    id       int auto_increment,
+    username varchar(32)  not null,
+    email    varchar(100) not null,
+    password varchar(200) null,
+    constraint users_pk
+        primary key (id)
+);
+
+create unique index users_email_uindex
+    on users (email);
+
+create unique index users_username_uindex
+    on users (username);
+
+
+#lasdfkasjfd
+create table messages
+(
+    id       int auto_increment,
+    senderId int        not null,
+    sentAt   DATE       null,
+    content  mediumtext null,
+    constraint messages_pk
+        primary key (id),
+    constraint messages_users_id_fk
+        foreign key (senderId) references users (id)
+);
+
+#jaldfjk
+create table players
+(
+    id     int auto_increment,
+    userId int           not null,
+    rating int default 0 null,
+    constraint players_pk
+        primary key (id),
+    constraint players_user_id_fk
+        foreign key (userId) references sudoku.users (id)
+);
+
+
