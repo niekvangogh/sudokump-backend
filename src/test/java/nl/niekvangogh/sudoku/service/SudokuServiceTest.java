@@ -96,11 +96,8 @@ class SudokuServiceTest {
 
         Tile[] box = this.sudokuService.getBox(sudoku, xPos, yPos);
 
-        int rowNr = yPos / 3;
-        int colNr = xPos / 3;
-
-        int startY = rowNr * 3;
-        int startX = colNr * 3;
+        int startY = (yPos / 3) * 3;
+        int startX = (xPos / 3) * 3;
 
         long tileAmount = Arrays.stream(box).filter(tile -> {
             for (int x = startX; x < startX + 3; x++) {
@@ -185,8 +182,27 @@ class SudokuServiceTest {
     }
 
     @Test
-    void fillTile() {
-        //?
+    void fillTile_GivenFillableTile_ShouldReturnTrue() {
+        Sudoku sudoku = new Sudoku();
+        this.sudokuService.fillDiagonal(sudoku);
+
+        Tile[][] grid = sudoku.getGrid();
+
+        assertTrue(this.sudokuService.fillTile(sudoku, grid[4][1]));
+    }
+
+    @Test
+    void fillTile_GivenFillableTile_ShouldFillWithSafeNumber() {
+        Sudoku sudoku = new Sudoku();
+        this.sudokuService.fillDiagonal(sudoku);
+
+        Tile[][] grid = sudoku.getGrid();
+        Tile tile = grid[4][1];
+        if (this.sudokuService.fillTile(sudoku, tile)) {
+            assertTrue(this.sudokuService.checkIfSafe(sudoku, tile, tile.getSolution()));
+        } else {
+            fail();
+        }
     }
 
     @Test

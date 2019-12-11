@@ -1,7 +1,6 @@
 package nl.niekvangogh.sudoku.service;
 
 import nl.niekvangogh.sudoku.pojo.Ranking;
-import nl.niekvangogh.sudoku.pojo.sudoku.Box;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 

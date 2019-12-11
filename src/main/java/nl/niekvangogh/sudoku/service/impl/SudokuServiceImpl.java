@@ -43,6 +43,11 @@ public class SudokuServiceImpl implements SudokuService {
     }
 
     @Override
+    public boolean fillSudoku(Sudoku sudoku) {
+        return false;
+    }
+
+    @Override
     public void createPuzzle(Sudoku sudoku, Ranking ranking) {
 
     }
