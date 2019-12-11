@@ -38,7 +38,7 @@ public class SudokuServiceImpl implements SudokuService {
     }
 
     @Override
-    public boolean fillRemainingTiles(Sudoku sudoku, Tile tile) {
+    public boolean fillTile(Sudoku sudoku, Tile tile) {
         return false;
     }
 

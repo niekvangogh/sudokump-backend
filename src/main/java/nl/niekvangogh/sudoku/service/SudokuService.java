@@ -71,13 +71,23 @@ public interface SudokuService {
     boolean isUnusedInBox(Sudoku sudoku, Tile tile, int value);
 
     /**
-     * Recursive function which fills the remaining tiles in the Sudoku
+     * function which fills a remaining tiles in the Sudoku
      *
      * @param sudoku The Sudoku which is going to be filled
      * @param tile   The tile which is going to be filled
      * @return a boolean, if true, it has been finished, if false, it hasn't
      */
-    boolean fillRemainingTiles(Sudoku sudoku, Tile tile);
+    boolean fillTile(Sudoku sudoku, Tile tile);
+
+
+    /**
+     * Fills the whole Sudoku
+     *
+     * @param sudoku The Sudoku to be filled
+     * @return if it has been filled or not
+     */
+    boolean fillSudoku(Sudoku sudoku);
+
 
     /**
      * Creates the actual puzzle, removing N amount of tiles depending on the ranking

@@ -70,7 +70,7 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         Tile tile = this.sudokuService.getTile(sudoku, -1, 23);
 
-        assertNull( tile);
+        assertNull(tile);
     }
 
     @Test
@@ -162,4 +162,62 @@ class SudokuServiceTest {
 
         assertTrue(this.sudokuService.isUnusedInBox(sudoku, box[0], box[4].getSolution()));
     }
+
+    @Test
+    void fillRemainingTiles_GivenEmptySudoku_ShouldFuckUp() {
+        Sudoku sudoku = new Sudoku();
+        boolean filled = this.sudokuService.fillTile(sudoku, sudoku.getGrid()[0][0]);
+
+        //????
+    }
+
+    @Test
+    void fillRemainingTiles_GivenCompletableSudoku_ShouldFillTile() {
+        Sudoku sudoku = new Sudoku();
+        this.sudokuService.fillDiagonal(sudoku);
+
+        Tile[] box = this.sudokuService.getBox(sudoku, 9, 0);
+
+        for (Tile tile : box) {
+            boolean filled = this.sudokuService.fillTile(sudoku, tile);
+            assertTrue(filled);
+        }
+    }
+
+    @Test
+    void fillTile() {
+        //?
+    }
+
+    @Test
+    void fillSudoku_GivenDiagonalSudoku_ShouldCompletelyFill() {
+        Sudoku sudoku = new Sudoku();
+        this.sudokuService.fillDiagonal(sudoku);
+
+        Tile[][] grid = sudoku.getGrid();
+
+        this.sudokuService.fillSudoku(sudoku);
+
+        for (Tile[] tiles : grid) {
+            for (Tile tile : tiles) {
+                assertTrue(tile.getSolution() != 0);
+            }
+        }
+    }
+
+    @Test
+    void fillSudoku_GivenDiagonalSudoku_AllTilesShouldBeSafe() {
+        Sudoku sudoku = new Sudoku();
+        this.sudokuService.fillDiagonal(sudoku);
+        this.sudokuService.fillSudoku(sudoku);
+
+        Tile[][] grid = sudoku.getGrid();
+
+        for (Tile[] tiles : grid) {
+            for (Tile tile : tiles) {
+                assertTrue(this.sudokuService.checkIfSafe(sudoku, tile, tile.getSolution()));
+            }
+        }
+    }
+
 }
