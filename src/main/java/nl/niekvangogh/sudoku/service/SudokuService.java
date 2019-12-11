@@ -93,7 +93,7 @@ public interface SudokuService {
      * @param tile   The tile which is going to be filled
      * @return a boolean, if true, it has been finished, if false, it hasn't
      */
-    boolean fillTile(Sudoku sudoku, Tile tile);
+    boolean fillTile(Sudoku sudoku, int x, int y);
 
 
     /**

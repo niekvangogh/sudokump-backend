@@ -1,13 +1,9 @@
 package nl.niekvangogh.sudoku.service.impl;
 
-import nl.niekvangogh.sudoku.SudokUtils;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.SudokuService;
-
-import java.util.Arrays;
-import java.util.Random;
 
 public class SudokuServiceImpl implements SudokuService {
 
@@ -99,25 +95,48 @@ public class SudokuServiceImpl implements SudokuService {
     }
 
     @Override
-    public boolean fillTile(Sudoku sudoku, Tile tile) {
+    public boolean fillTile(Sudoku sudoku, int x, int y) {
+        if (y >= 9 && x < 9 - 1) {
+            x = x + 1;
+            y = 0;
+        }
+
+        if (x >= 9 && y >= 9) {
+            return true;
+        }
+
+        if (x < 3) {
+            if (y < 3)
+                y = 3;
+        } else if (x < 9 - 3) {
+            if (y == (x / 3) * 3)
+                y = y + 3;
+        } else {
+            if (y == 9 - 3) {
+                x = x + 1;
+                y = 0;
+                if (x >= 9)
+                    return true;
+            }
+        }
+
+        Tile tile = this.getTile(sudoku, x, y);
+
         for (int num = 1; num <= 9; num++) {
             if (this.checkIfSafe(sudoku, tile, num)) {
                 tile.setSolution(num);
-                return true;
+                if (this.fillTile(sudoku, x, y + 1)) {
+                    return true;
+                }
+                tile.setSolution(0);
             }
         }
-        System.out.println("LOL FUCK");
         return false;
     }
 
     @Override
     public boolean fillSudoku(Sudoku sudoku) {
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                this.fillTile(sudoku, this.getTile(sudoku, x, y));
-            }
-        }
-        return true;
+        return this.fillTile(sudoku, 0, 3);
     }
 
     @Override

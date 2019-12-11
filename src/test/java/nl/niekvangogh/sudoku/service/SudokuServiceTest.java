@@ -47,6 +47,7 @@ class SudokuServiceTest {
     void fillDiagonal_GivenEmptySudoku_ShouldFillWithSafeNumbers() {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
+        SudokUtils.printSudoku(sudoku.getGrid());
 
         for (int i = 0; i < 3; i++) {
             int x = (i + 1) * 3;
@@ -167,7 +168,7 @@ class SudokuServiceTest {
     @Test
     void fillRemainingTiles_GivenEmptySudoku_ShouldFuckUp() {
         Sudoku sudoku = new Sudoku();
-        boolean filled = this.sudokuService.fillTile(sudoku, sudoku.getGrid()[0][0]);
+        boolean filled = this.sudokuService.fillTile(sudoku, 0, 0);
 
         //????
     }
@@ -180,7 +181,7 @@ class SudokuServiceTest {
         Tile[] box = this.sudokuService.getBox(sudoku, 9, 0);
 
         for (Tile tile : box) {
-            boolean filled = this.sudokuService.fillTile(sudoku, tile);
+            boolean filled = this.sudokuService.fillTile(sudoku, tile.getXPos(), tile.getYPos());
             assertTrue(filled);
         }
     }
@@ -192,7 +193,7 @@ class SudokuServiceTest {
 
         Tile[][] grid = sudoku.getGrid();
 
-        assertTrue(this.sudokuService.fillTile(sudoku, grid[4][1]));
+        assertTrue(this.sudokuService.fillTile(sudoku, 4, 1));
     }
 
     @Test
@@ -202,7 +203,7 @@ class SudokuServiceTest {
 
         Tile[][] grid = sudoku.getGrid();
         Tile tile = grid[4][1];
-        if (this.sudokuService.fillTile(sudoku, tile)) {
+        if (this.sudokuService.fillTile(sudoku, 4, 1)) {
             assertTrue(this.sudokuService.checkIfSafe(sudoku, tile, tile.getSolution()));
         } else {
             fail();
@@ -230,8 +231,6 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
         this.sudokuService.fillSudoku(sudoku);
-
-        SudokUtils.printSudoku(sudoku.getGrid());
 
         Tile[][] grid = sudoku.getGrid();
 
