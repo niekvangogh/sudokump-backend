@@ -58,6 +58,22 @@ class SudokuServiceTest {
     }
 
     @Test
+    void getTile_GivenCorrectCoordinates_ShouldGetTile() {
+        Sudoku sudoku = new Sudoku();
+        Tile tile = this.sudokuService.getTile(sudoku, 0, 0);
+
+        assertEquals(sudoku.getGrid()[0][0], tile);
+    }
+
+    @Test
+    void getTile_OffBoundCoordinates_ShouldReturnNull() {
+        Sudoku sudoku = new Sudoku();
+        Tile tile = this.sudokuService.getTile(sudoku, -1, 23);
+
+        assertNull( tile);
+    }
+
+    @Test
     void fillBox_givenEmptySudoku_ShouldFillWithSafeNumbers() {
         Sudoku sudoku = new Sudoku();
         Tile tile = this.sudokuService.getTile(sudoku, 2, 2);
@@ -135,4 +151,15 @@ class SudokuServiceTest {
         assertTrue(this.sudokuService.isUnusedInBox(sudoku, box[0], 9));
     }
 
+    @Test
+    void isUnusedInBox_GivenUsedNumberAndAlmostFilledBox_ShouldReturnFalse() {
+        Sudoku sudoku = new Sudoku();
+        Tile[] box = this.sudokuService.getBox(sudoku, 0, 0);
+        for (int i = 1; i < box.length; i++) {
+            Tile tile = box[i];
+            tile.setSolution(i);
+        }
+
+        assertTrue(this.sudokuService.isUnusedInBox(sudoku, box[0], box[4].getSolution()));
+    }
 }

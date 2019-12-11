@@ -39,6 +39,16 @@ public interface SudokuService {
      */
     Tile[] getBox(Sudoku sudoku, int x, int y);
 
+    /**
+     * Gets a Tile in a Sudoku
+     *
+     * @param sudoku the Sudoku which is going to be checked on
+     * @param x      the x coordinates
+     * @param y      the y coordinates
+     * @return the Tile associated with the provided coordinates
+     */
+    Tile getTile(Sudoku sudoku, int x, int y);
+
 
     /**
      * Checks if the tile provided can be filled with a number.
@@ -84,14 +94,4 @@ public interface SudokuService {
      * @param amount The amount of tiles which are going to be removed.
      */
     void createPuzzle(Sudoku sudoku, int amount);
-
-    /**
-     * Gets a Tile in a Sudoku
-     *
-     * @param sudoku the Sudoku which is going to be checked on
-     * @param x      the x coordinates
-     * @param y      the y coordinates
-     * @return the Tile associated with the provided coordinates
-     */
-    Tile getTile(Sudoku sudoku, int x, int y);
 }
