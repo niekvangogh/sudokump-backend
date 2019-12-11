@@ -70,6 +70,23 @@ public interface SudokuService {
     boolean isUnusedInBox(Sudoku sudoku, Tile tile, int value);
 
     /**
+     * @param sudoku The Sudoku to be checked
+     * @param yPos   The y position of the column
+     * @param value  The value to check if it exists
+     * @return Returns true if it unused
+     */
+    boolean isUnusedInCol(Sudoku sudoku, int yPos, int value);
+
+
+    /**
+     * @param sudoku The Sudoku to be checked
+     * @param xPos   The x position of the row
+     * @param value  The value to check if it exists
+     * @return Returns true if it unused
+     */
+    boolean isUnusedInRow(Sudoku sudoku, int xPos, int value);
+
+    /**
      * function which fills a remaining tiles in the Sudoku
      *
      * @param sudoku The Sudoku which is going to be filled

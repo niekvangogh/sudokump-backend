@@ -60,14 +60,36 @@ public class SudokuServiceImpl implements SudokuService {
 
     @Override
     public boolean checkIfSafe(Sudoku sudoku, Tile tile, int value) {
-// lots of work cba
-        return true;
+        return (this.isUnusedInRow(sudoku, tile.getXPos(), value) &&
+                this.isUnusedInCol(sudoku, tile.getYPos(), value) &&
+                this.isUnusedInBox(sudoku, tile, value));
     }
 
     @Override
     public boolean isUnusedInBox(Sudoku sudoku, Tile tile, int value) {
         Tile[] box = this.getBox(sudoku, tile.getXPos(), tile.getYPos());
         return Arrays.stream(box).noneMatch(boxTile -> boxTile.getSolution() == value);
+    }
+
+    @Override
+    public boolean isUnusedInCol(Sudoku sudoku, int yPos, int value) {
+        for (int i = 0; i < 9; i++) {
+            if (sudoku.getGrid()[i][yPos].getSolution() == value) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isUnusedInRow(Sudoku sudoku, int xPos, int value) {
+        for (int j = 0; j < 9; j++) {
+            if (sudoku.getGrid()[xPos][j].getSolution() == value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
