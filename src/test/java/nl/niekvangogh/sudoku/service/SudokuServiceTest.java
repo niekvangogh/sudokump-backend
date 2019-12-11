@@ -33,8 +33,6 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
 
-        SudokUtils.printSudoku(sudoku.getGrid());
-
         for (int i = 0; i < 3; i++) {
             int x = i * 3;
             int y = i * 3;
@@ -55,7 +53,7 @@ class SudokuServiceTest {
             int y = (i + 1) * 3;
             Tile[] box = this.sudokuService.getBox(sudoku, x, y);
             for (Tile tile : box) {
-                assertTrue(this.sudokuService.checkIfSafe(sudoku, tile, tile.getSolution()));
+                assertTrue(this.sudokuService.checkIfSafe(sudoku, tile, tile.getSolution())); // check if safe doesnt work here
             }
         }
     }
@@ -232,6 +230,8 @@ class SudokuServiceTest {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
         this.sudokuService.fillSudoku(sudoku);
+
+        SudokUtils.printSudoku(sudoku.getGrid());
 
         Tile[][] grid = sudoku.getGrid();
 

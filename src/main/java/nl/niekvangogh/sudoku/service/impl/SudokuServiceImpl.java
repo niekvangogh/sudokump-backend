@@ -1,5 +1,6 @@
 package nl.niekvangogh.sudoku.service.impl;
 
+import nl.niekvangogh.sudoku.SudokUtils;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
@@ -99,12 +100,24 @@ public class SudokuServiceImpl implements SudokuService {
 
     @Override
     public boolean fillTile(Sudoku sudoku, Tile tile) {
+        for (int num = 1; num <= 9; num++) {
+            if (this.checkIfSafe(sudoku, tile, num)) {
+                tile.setSolution(num);
+                return true;
+            }
+        }
+        System.out.println("LOL FUCK");
         return false;
     }
 
     @Override
     public boolean fillSudoku(Sudoku sudoku) {
-        return false;
+        for (int y = 0; y < 9; y++) {
+            for (int x = 0; x < 9; x++) {
+                this.fillTile(sudoku, this.getTile(sudoku, x, y));
+            }
+        }
+        return true;
     }
 
     @Override
