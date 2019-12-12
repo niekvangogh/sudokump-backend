@@ -20,7 +20,8 @@ class SudokuServiceTest {
 
     @Test
     void canGenerateSudokuOf81By81() {
-        Sudoku sudoku = this.sudokuService.generateSudoku(25);
+        Sudoku sudoku = this.sudokuService.generateSudoku(16);
+        this.sudokuService.createPuzzle(sudoku, 10);
         SudokUtils.printSudoku(sudoku.getGrid());
     }
 

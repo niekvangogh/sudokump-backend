@@ -149,8 +149,21 @@ public class SudokuServiceImpl implements SudokuService {
     }
 
     @Override
-    public void createPuzzle(Sudoku sudoku, int amount) {
+    public void createPuzzle(Sudoku sudoku, int count) {
+        while (count != 0) {
+            int cellId = sudoku.getRandomGenerator(sudoku.getSize() * sudoku.getSize());
 
+            int i = (cellId / sudoku.getSize());
+            int j = cellId % 9;
+            if (j != 0) {
+                j = j - 1;
+            }
+
+            if (sudoku.getGrid()[i][j].getSolution() != 0) {
+                count--;
+                sudoku.getGrid()[i][j].setSolution(0);
+            }
+        }
     }
 
     @Override
