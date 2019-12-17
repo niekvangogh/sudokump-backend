@@ -12,5 +12,6 @@ public class Player extends AbstractBaseEntity {
     @OneToOne
     private User user;
 
+    @Column()
     public int rating;
 }
