@@ -24,8 +24,8 @@ public class GameManagerServiceImpl implements GameManagerService {
     @Override
     public Game createGame(Ranking ranking) {
         Game game = new Game();
-        game.setRanking(ranking);
-        game.setSeed((long) (Math.random() * 1000));
+        game.getGameDetails().setRanking(ranking);
+        game.getGameDetails().setSeed((long) (Math.random() * 1000));
         this.games.add(game);
         return game;
     }
@@ -33,26 +33,26 @@ public class GameManagerServiceImpl implements GameManagerService {
     @Override
     public Game findGame(Player player) {
         // im going to make this so basic for now lolololol
-        return this.games.stream().filter(game -> game.getRanking().isIn(player.rating)).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getGameDetails().getRanking().isIn(player.rating)).findFirst().orElse(null);
     }
 
     @Override
     public void startGame(Game game) {
-        game.setGameState(GameState.STARTED);
+        game.getGameDetails().setGameState(GameState.STARTED);
     }
 
     @Override
     public Game getGame(Player player) {
-        return this.games.stream().filter(game -> game.getPlayers().contains(player)).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getGameDetails().getPlayers().contains(player)).findFirst().orElse(null);
     }
 
     @Override
     public void addPlayer(Game game, Player player) {
-        game.getPlayers().add(player);
+        game.getGameDetails().getPlayers().add(player);
     }
 
     @Override
     public void removePlayer(Game game, Player player) {
-        game.getPlayers().remove(player);
+        game.getGameDetails().getPlayers().remove(player);
     }
 }

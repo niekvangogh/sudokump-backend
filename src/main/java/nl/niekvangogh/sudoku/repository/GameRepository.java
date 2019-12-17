@@ -1,7 +1,6 @@
 package nl.niekvangogh.sudoku.repository;
 
-import nl.niekvangogh.sudoku.entity.Game;
-import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.game.GameDetails;
 
-public interface GameRepository extends BaseRepository<Game, Long> {
+public interface GameRepository extends BaseRepository<GameDetails, Long> {
 }

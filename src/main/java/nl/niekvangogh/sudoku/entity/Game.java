@@ -1,36 +1,22 @@
 package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
-import lombok.Setter;
-import nl.niekvangogh.sudoku.pojo.Ranking;
-import nl.niekvangogh.sudoku.pojo.game.GameState;
+import nl.niekvangogh.sudoku.pojo.game.GameDetails;
+import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-@Entity
-@Table(name = "games")
-public class Game extends AbstractBaseEntity {
+public class Game {
 
-    @OneToMany
     @Getter
-    private List<Player> players;
+    private GameDetails gameDetails = new GameDetails();
 
-    @Column()
-    @Setter
     @Getter
-    private long seed;
+    private Map<Player, Sudoku> playerSudokuMap;
 
-    @Column()
-    @Setter
-    @Getter
-    private Ranking ranking;
+    public Game() {
+        this.playerSudokuMap = new HashMap<>();
+    }
 
-    @Column()
-    @Setter
-    @Getter
-    private GameState gameState = GameState.NOT_STARTED;
 }

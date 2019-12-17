@@ -1,7 +1,8 @@
-package nl.niekvangogh.sudoku.entity;
+package nl.niekvangogh.sudoku.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

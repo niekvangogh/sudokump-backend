@@ -1,17 +1,14 @@
 package nl.niekvangogh.sudoku.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import lombok.Getter;
+import nl.niekvangogh.sudoku.pojo.User;
 
-@Entity
-@Table(name = "players")
 public class Player extends AbstractBaseEntity {
 
-    @OneToOne
+    @Getter
     private User user;
 
-    @Column()
-    public int rating;
+    // connectino
+    //todo
+
 }

@@ -17,7 +17,7 @@ public class Sudoku {
     @Getter
     private Tile[][] grid;
 
-    private Sudoku(long seed, int size) {
+    public Sudoku(long seed, int size) {
         this.randomGenerator = new Random(seed);
         this.grid = new Tile[size][size];
 

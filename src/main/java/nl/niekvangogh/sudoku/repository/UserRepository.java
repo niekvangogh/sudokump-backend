@@ -1,6 +1,6 @@
 package nl.niekvangogh.sudoku.repository;
 
-import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.User;
 
 public interface UserRepository extends BaseRepository<User, Long> {
 
