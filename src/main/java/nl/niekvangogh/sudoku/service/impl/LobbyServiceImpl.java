@@ -10,7 +10,6 @@ import java.util.List;
 
 public class LobbyServiceImpl implements LobbyService {
 
-
     private List<Lobby> lobbies = new ArrayList<>();
 
     @Override
