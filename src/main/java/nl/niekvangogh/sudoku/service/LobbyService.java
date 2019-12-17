@@ -13,6 +13,10 @@ public interface LobbyService {
 
     void joinLobby(Lobby lobby, Player player);
 
+    void leaveLobby(Lobby lobby, Player player);
+
+    Lobby getLobby(Player player);
+
     void onChat(Player player, ChatMessage message);
 
 }
