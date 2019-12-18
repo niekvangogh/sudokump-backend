@@ -2,6 +2,7 @@ package nl.niekvangogh.sudoku.service.impl;
 
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.Player;
+import nl.niekvangogh.sudoku.pojo.User;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.GameService;
@@ -16,7 +17,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public void onGameStart(Game game) {
         Sudoku sudoku = new Sudoku(game.getGameDetails().getSeed(), 9);
-        for (Player player : game.getGameDetails().getPlayers()) {
+        for (User user : game.getGameDetails().getUsers()) {
+            Player player = new Player(user);
             game.getPlayerSudokuMap().put(player, sudoku);
         }
 
@@ -34,7 +36,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void onPlayerSubmitTile(Game game, Player player, Tile tile, int value) {
-
+,
     }
 
     @Override

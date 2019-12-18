@@ -31,14 +31,13 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                     ServerHttpRequest request,
                     ServerHttpResponse response,
                     WebSocketHandler wsHandler,
-                    Map attributes) throws Exception {
+                    Map<String, String> attributes) throws Exception {
 
                 if (request instanceof ServletServerHttpRequest) {
-                    ServletServerHttpRequest servletRequest
-                            = (ServletServerHttpRequest) request;
-                    HttpSession session = servletRequest
-                            .getServletRequest().getSession();
+                    ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
+                    HttpSession session = servletRequest.getServletRequest().getSession();
                     attributes.put("sessionId", session.getId());
+                    attributes.
                 }
                 return true;
             }

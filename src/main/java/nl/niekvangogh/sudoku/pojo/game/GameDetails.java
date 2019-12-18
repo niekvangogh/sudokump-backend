@@ -19,7 +19,7 @@ public class GameDetails extends AbstractBaseEntity {
 
     @OneToMany
     @Getter
-    private List<User> players;
+    private List<User> users;
 
     @Column()
     @Setter
