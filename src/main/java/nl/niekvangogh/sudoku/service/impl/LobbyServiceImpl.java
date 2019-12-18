@@ -1,7 +1,7 @@
 package nl.niekvangogh.sudoku.service.impl;
 
 import nl.niekvangogh.sudoku.entity.ChatMessage;
-import nl.niekvangogh.sudoku.entity.Player;
+import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.lobby.Lobby;
 import nl.niekvangogh.sudoku.service.LobbyService;
 
@@ -20,7 +20,7 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
-    public Lobby findLobby(Player player) {
+    public Lobby findLobby(User user) {
         Lobby lobby = lobbies.get(0);
         if (lobby == null) {
             lobby = this.createLobby();
@@ -29,22 +29,22 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
-    public void joinLobby(Lobby lobby, Player player) {
-        lobby.getPlayers().add(player);
+    public void joinLobby(Lobby lobby, User user) {
+        lobby.getUsers().add(user);
     }
 
     @Override
-    public void leaveLobby(Lobby lobby, Player player) {
-        lobby.getPlayers().remove(player);
+    public void leaveLobby(Lobby lobby, User user) {
+        lobby.getUsers().remove(user);
     }
 
     @Override
-    public Lobby getLobby(Player player) {
-        return this.lobbies.stream().filter(lobby -> lobby.getPlayers().contains(player)).findFirst().orElse(null);
+    public Lobby getLobby(User user) {
+        return this.lobbies.stream().filter(lobby -> lobby.getUsers().contains(user)).findFirst().orElse(null);
     }
 
     @Override
-    public void onChat(Player player, ChatMessage message) {
+    public void onChat(User user, ChatMessage message) {
 
     }
 }

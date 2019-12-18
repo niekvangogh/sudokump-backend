@@ -1,8 +1,8 @@
 package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
+import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.game.GameDetails;
-import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +13,10 @@ public class Game {
     private GameDetails gameDetails = new GameDetails();
 
     @Getter
-    private Map<Player, Sudoku> playerSudokuMap;
+    private Map<User, GamePlayer> userMap;
 
     public Game() {
-        this.playerSudokuMap = new HashMap<>();
+        this.userMap = new HashMap<>();
     }
 
 }

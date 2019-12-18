@@ -26,21 +26,26 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/greeting").setHandshakeHandler(new DefaultHandshakeHandler() {
-            public boolean beforeHandshake(
-                    ServerHttpRequest request,
-                    ServerHttpResponse response,
-                    WebSocketHandler wsHandler,
-                    Map<String, String> attributes) throws Exception {
 
-                if (request instanceof ServletServerHttpRequest) {
-                    ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
-                    HttpSession session = servletRequest.getServletRequest().getSession();
-                    attributes.put("sessionId", session.getId());
-                    attributes.
-                }
-                return true;
-            }
-        }).withSockJS();
+        registry
+                .addEndpoint("/greeting")
+                .setAllowedOrigins("*")
+                .setHandshakeHandler(new DefaultHandshakeHandler() {
+                    public boolean beforeHandshake(
+                            ServerHttpRequest request,
+                            ServerHttpResponse response,
+                            WebSocketHandler wsHandler,
+                            Map attributes) throws Exception {
+
+                        if (request instanceof ServletServerHttpRequest) {
+                            ServletServerHttpRequest servletRequest
+                                    = (ServletServerHttpRequest) request;
+                            HttpSession session = servletRequest
+                                    .getServletRequest().getSession();
+                            attributes.put("sessionId", session.getId());
+                        }
+                        return true;
+                    }
+                }).withSockJS();
     }
 }

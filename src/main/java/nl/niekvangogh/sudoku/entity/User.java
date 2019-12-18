@@ -1,4 +1,4 @@
-package nl.niekvangogh.sudoku.pojo;
+package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,18 +17,26 @@ public class User extends AbstractBaseEntity {
     @NotBlank
     @Column(unique = true)
     @Size(min = 4, max = 32)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String username;
 
     @NotBlank
     @Column(unique = true)
     @Size(min = 1, max = 100)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String email;
 
     @Size(min = 8, max = 200)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String password;
+
+    @Column()
+    @Getter
+    @Setter
+    private int rating;
 
 
 }

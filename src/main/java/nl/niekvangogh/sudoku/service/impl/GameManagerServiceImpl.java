@@ -1,8 +1,8 @@
 package nl.niekvangogh.sudoku.service.impl;
 
 import nl.niekvangogh.sudoku.entity.Game;
-import nl.niekvangogh.sudoku.entity.Player;
 import nl.niekvangogh.sudoku.pojo.Ranking;
+import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.service.GameManagerService;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public class GameManagerServiceImpl implements GameManagerService {
 
-    private List<Player> queued = new ArrayList<>();
+    private List<User> queued = new ArrayList<>();
     private List<Game> games = new ArrayList<>();
 
     @Override
-    public void queuePlayer(Player player) {
+    public void queuePlayer(User player) {
         this.queued.add(player);
     }
 
@@ -31,9 +31,9 @@ public class GameManagerServiceImpl implements GameManagerService {
     }
 
     @Override
-    public Game findGame(Player player) {
+    public Game findGame(User user) {
         // im going to make this so basic for now lolololol
-        return this.games.stream().filter(game -> game.getGameDetails().getRanking().isIn(player.rating)).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getGameDetails().getRanking().isIn(user.getRating())).findFirst().orElse(null);
     }
 
     @Override
@@ -42,17 +42,17 @@ public class GameManagerServiceImpl implements GameManagerService {
     }
 
     @Override
-    public Game getGame(Player player) {
-        return this.games.stream().filter(game -> game.getGameDetails().getPlayers().contains(player)).findFirst().orElse(null);
+    public Game getGame(User user) {
+        return this.games.stream().filter(game -> game.getGameDetails().getUsers().contains(user)).findFirst().orElse(null);
     }
 
     @Override
-    public void addPlayer(Game game, Player player) {
-        game.getGameDetails().getPlayers().add(player);
+    public void addPlayer(Game game, User user) {
+        game.getGameDetails().getUsers().add(user);
     }
 
     @Override
-    public void removePlayer(Game game, Player player) {
-        game.getGameDetails().getPlayers().remove(player);
+    public void removePlayer(Game game, User user) {
+        game.getGameDetails().getUsers().remove(user);
     }
 }

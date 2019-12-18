@@ -3,9 +3,8 @@ package nl.niekvangogh.sudoku.pojo.game;
 import lombok.Getter;
 import lombok.Setter;
 import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
-import nl.niekvangogh.sudoku.entity.Player;
 import nl.niekvangogh.sudoku.pojo.Ranking;
-import nl.niekvangogh.sudoku.pojo.User;
+import nl.niekvangogh.sudoku.entity.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

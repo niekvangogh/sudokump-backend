@@ -12,7 +12,7 @@ import java.util.Date;
 public class ChatMessage extends AbstractBaseEntity {
 
     @ManyToOne
-    private Player sender;
+    private User sender;
 
     @Getter
     private Date sentAt;

@@ -1,22 +1,21 @@
 package nl.niekvangogh.sudoku.service;
 
 import nl.niekvangogh.sudoku.entity.ChatMessage;
-import nl.niekvangogh.sudoku.entity.Player;
-import nl.niekvangogh.sudoku.pojo.Ranking;
+import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.lobby.Lobby;
 
 public interface LobbyService {
 
     Lobby createLobby();
 
-    Lobby findLobby(Player player);
+    Lobby findLobby(User user);
 
-    void joinLobby(Lobby lobby, Player player);
+    void joinLobby(Lobby lobby,User user);
 
-    void leaveLobby(Lobby lobby, Player player);
+    void leaveLobby(Lobby lobby, User user);
 
-    Lobby getLobby(Player player);
+    Lobby getLobby(User user);
 
-    void onChat(Player player, ChatMessage message);
+    void onChat(User user, ChatMessage message);
 
 }
