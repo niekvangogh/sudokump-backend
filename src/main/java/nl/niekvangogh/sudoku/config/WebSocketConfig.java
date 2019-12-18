@@ -46,6 +46,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                         }
                         return true;
                     }
-                }).withSockJS();
+                });
     }
 }
