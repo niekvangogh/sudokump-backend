@@ -2,6 +2,7 @@ package nl.niekvangogh.sudoku.controller;
 
 import com.google.gson.Gson;
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.queue.QueueEnteredResponse;
 import nl.niekvangogh.sudoku.service.impl.GameManagerServiceImpl;
 import nl.niekvangogh.sudoku.service.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,7 @@ public class GameController {
     public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) throws Exception {
         this.gameManagerService.queuePlayer(new User());
 
-        System.out.println(principal.getName());
-
-
-//        this.messageSendingService.convertAndSend("/game/queue/status", "asdfasdf");
-        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", "test1", createHeaders(accessor.getSessionId()));
+        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", new QueueEnteredResponse(true), this.createHeaders(accessor.getSessionId()));
     }
 
     @MessageMapping("/game/queue/cancel")

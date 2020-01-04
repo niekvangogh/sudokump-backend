@@ -22,6 +22,11 @@ public class GameManagerServiceImpl implements GameManagerService {
     }
 
     @Override
+    public void cancelQueue(User user) {
+        this.queued.remove(user);
+    }
+
+    @Override
     public Game createGame(Ranking ranking) {
         Game game = new Game();
         game.getGameDetails().setRanking(ranking);

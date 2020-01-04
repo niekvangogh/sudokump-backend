@@ -13,6 +13,14 @@ public interface GameManagerService {
      */
     void queuePlayer(User user);
 
+
+    /**
+     * Removes a player from the queue
+     *
+     * @param user the player which is going to be unqueued
+     */
+    void cancelQueue(User user);
+
     /**
      * this method creates a game, including the sudoku
      *
@@ -45,16 +53,16 @@ public interface GameManagerService {
     /**
      * Adds a player to the game, this is the last step of the process of finding a game
      *
-     * @param game   the game the player is going to be added to
+     * @param game the game the player is going to be added to
      * @param user the player which is going to be added
      */
-    void addPlayer(Game game,User user);
+    void addPlayer(Game game, User user);
 
     /**
      * Forces a player to be removed from a game
      *
-     * @param game   the game the player can be in
+     * @param game the game the player can be in
      * @param user the player which is going to be removed
      */
-    void removePlayer(Game game,User user);
+    void removePlayer(Game game, User user);
 }
