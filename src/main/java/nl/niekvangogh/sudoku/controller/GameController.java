@@ -31,25 +31,32 @@ public class GameController {
     @Autowired
     private GameManagerServiceImpl gameManagerService;
 
-    @MessageMapping("/queue/start")
+    @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) throws Exception {
         this.gameManagerService.queuePlayer(new User());
 
         System.out.println(principal.getName());
 
-
-        this.messageSendingService.convertAndSendToUser(principal.getName(), "/queue/status", "test1");
-        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/queue/status", "test3");
+        this.messageSendingService.convertAndSendToUser(principal.getName(), "/game/queue/status", "test1", createHeaders(principal.getName()));
     }
 
-    @MessageMapping("/queue/cancel")
+    @MessageMapping("/game/queue/cancel")
     public void cancelQueue() {
 //        this.gameManagerService.cancelQueue(player);
     }
 
     @MessageExceptionHandler
-    @SendToUser("/queue/errors")
+    @SendToUser("/game/queue/errors")
     public String handleException(Throwable exception) {
         return exception.getMessage();
     }
+
+
+    private MessageHeaders createHeaders(String sessionId) {
+        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+        headerAccessor.setSessionId(sessionId);
+        headerAccessor.setLeaveMutable(true);
+        return headerAccessor.getMessageHeaders();
+    }
+
 }
