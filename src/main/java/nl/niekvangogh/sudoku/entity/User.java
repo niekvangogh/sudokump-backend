@@ -1,13 +1,13 @@
 package nl.niekvangogh.sudoku.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
+import nl.niekvangogh.sudoku.pojo.AuthProvider;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -19,7 +19,7 @@ public class User extends AbstractBaseEntity {
     @Size(min = 4, max = 32)
     @Getter
     @Setter
-    private String username;
+    private String name;
 
     @NotBlank
     @Column(unique = true)
@@ -31,6 +31,7 @@ public class User extends AbstractBaseEntity {
     @Size(min = 8, max = 200)
     @Getter
     @Setter
+    @JsonIgnore
     private String password;
 
     @Column()
@@ -38,5 +39,11 @@ public class User extends AbstractBaseEntity {
     @Setter
     private int rating;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Setter
+    @Getter
+    private AuthProvider provider;
 
+    private String providerId;
 }
