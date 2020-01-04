@@ -4,7 +4,9 @@ import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.SudokuService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SudokuServiceImpl implements SudokuService {
 
     @Override

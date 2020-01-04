@@ -1,5 +1,12 @@
 package nl.niekvangogh.sudoku.config;
 
+import nl.niekvangogh.sudoku.security.RestAuthenticationEntryPoint;
+import nl.niekvangogh.sudoku.security.TokenAuthenticationFilter;
+import nl.niekvangogh.sudoku.security.oauth2.CustomOAuth2UserService;
+import nl.niekvangogh.sudoku.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import nl.niekvangogh.sudoku.security.oauth2.OAuth2AuthenticationFailureHandler;
+import nl.niekvangogh.sudoku.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import nl.niekvangogh.sudoku.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -27,7 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private UserServiceImpl userService;
 
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
@@ -59,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
+                .userDetailsService(userService)
                 .passwordEncoder(passwordEncoder());
     }
 

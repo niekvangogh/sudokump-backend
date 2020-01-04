@@ -4,10 +4,12 @@ import nl.niekvangogh.sudoku.entity.ChatMessage;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.lobby.Lobby;
 import nl.niekvangogh.sudoku.service.LobbyService;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class LobbyServiceImpl implements LobbyService {
 
     private List<Lobby> lobbies = new ArrayList<>();

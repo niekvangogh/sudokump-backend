@@ -1,10 +1,9 @@
 package nl.niekvangogh.sudoku.security.oauth2;
 
-
-import com.example.springsocial.config.AppProperties;
-import com.example.springsocial.exception.BadRequestException;
-import com.example.springsocial.security.TokenProvider;
-import com.example.springsocial.util.CookieUtils;
+import nl.niekvangogh.sudoku.config.AppProperties;
+import nl.niekvangogh.sudoku.exception.BadRequestException;
+import nl.niekvangogh.sudoku.security.TokenProvider;
+import nl.niekvangogh.sudoku.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

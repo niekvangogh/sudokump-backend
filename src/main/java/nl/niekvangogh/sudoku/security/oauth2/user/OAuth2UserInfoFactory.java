@@ -1,5 +1,6 @@
 package nl.niekvangogh.sudoku.security.oauth2.user;
 
+import nl.niekvangogh.sudoku.exception.OAuth2AuthenticationProcessingException;
 import nl.niekvangogh.sudoku.pojo.AuthProvider;
 
 import java.util.Map;

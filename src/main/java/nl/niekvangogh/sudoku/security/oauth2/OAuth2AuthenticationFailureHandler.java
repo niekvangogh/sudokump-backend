@@ -1,7 +1,7 @@
 package nl.niekvangogh.sudoku.security.oauth2;
 
 
-import com.example.springsocial.util.CookieUtils;
+import nl.niekvangogh.sudoku.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;

@@ -1,6 +1,12 @@
 package nl.niekvangogh.sudoku.security.oauth2;
 
+import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.exception.OAuth2AuthenticationProcessingException;
+import nl.niekvangogh.sudoku.pojo.AuthProvider;
 import nl.niekvangogh.sudoku.repository.UserRepository;
+import nl.niekvangogh.sudoku.security.UserPrincipal;
+import nl.niekvangogh.sudoku.security.oauth2.user.OAuth2UserInfo;
+import nl.niekvangogh.sudoku.security.oauth2.user.OAuth2UserInfoFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;

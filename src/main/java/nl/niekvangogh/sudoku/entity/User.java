@@ -27,6 +27,10 @@ public class User extends AbstractBaseEntity {
     @Getter
     @Setter
     private String email;
+    
+    @Getter
+    @Setter
+    private String imageUrl;
 
     @Size(min = 8, max = 200)
     @Getter
@@ -45,5 +49,7 @@ public class User extends AbstractBaseEntity {
     @Getter
     private AuthProvider provider;
 
+    @Getter
+    @Setter
     private String providerId;
 }

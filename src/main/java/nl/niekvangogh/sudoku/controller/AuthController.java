@@ -1,8 +1,14 @@
 package nl.niekvangogh.sudoku.controller;
 
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.exception.BadRequestException;
 import nl.niekvangogh.sudoku.pojo.AuthProvider;
+import nl.niekvangogh.sudoku.pojo.auth.ApiResponse;
+import nl.niekvangogh.sudoku.pojo.auth.AuthResponse;
+import nl.niekvangogh.sudoku.pojo.auth.LoginRequest;
+import nl.niekvangogh.sudoku.pojo.auth.SignUpRequest;
 import nl.niekvangogh.sudoku.repository.UserRepository;
+import nl.niekvangogh.sudoku.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
