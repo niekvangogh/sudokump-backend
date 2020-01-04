@@ -1,6 +1,8 @@
 package nl.niekvangogh.sudoku.service;
 
-public interface PlayerService {
+public interface UserService {
+
+
 
 
 }
