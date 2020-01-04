@@ -22,7 +22,7 @@ public class GameController {
 
     private Gson gson = new Gson();
 
-    @MessageMapping("/message")
+    @MessageMapping("/game")
     @SendToUser("/queue/reply")
     public String processMessageFromClient(
             @Payload String message,

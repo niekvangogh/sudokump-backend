@@ -30,6 +30,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registry
                 .addEndpoint("/greeting")
                 .setAllowedOrigins("*")
+                .setAllowedOrigins("http://localhost:3000")
                 .setHandshakeHandler(new DefaultHandshakeHandler() {
                     public boolean beforeHandshake(
                             ServerHttpRequest request,
@@ -46,6 +47,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                         }
                         return true;
                     }
-                });
+                }).withSockJS();
     }
 }
