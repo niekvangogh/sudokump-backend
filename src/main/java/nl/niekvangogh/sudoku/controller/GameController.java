@@ -37,7 +37,9 @@ public class GameController {
 
         System.out.println(principal.getName());
 
-        this.messageSendingService.convertAndSendToUser(principal.getName(), "/game/queue/status", "test1", createHeaders(principal.getName()));
+
+//        this.messageSendingService.convertAndSend("/game/queue/status", "asdfasdf");
+        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", "test1", createHeaders(accessor.getSessionId()));
     }
 
     @MessageMapping("/game/queue/cancel")
