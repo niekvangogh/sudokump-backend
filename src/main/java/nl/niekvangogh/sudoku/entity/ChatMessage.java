@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name = "messages")
+@Table
 public class ChatMessage extends AbstractBaseEntity {
 
     @ManyToOne

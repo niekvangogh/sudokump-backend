@@ -2,7 +2,6 @@ package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
-import nl.niekvangogh.sudoku.pojo.game.GameDetails;
 
 import java.util.HashMap;
 import java.util.Map;

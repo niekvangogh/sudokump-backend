@@ -1,10 +1,11 @@
-package nl.niekvangogh.sudoku.pojo.game;
+package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.game.GameState;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "games")
+@Table
 public class GameDetails extends AbstractBaseEntity {
 
     @OneToMany
