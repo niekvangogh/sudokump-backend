@@ -35,18 +35,18 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/queue", "/game");
     }
 
-    @EventListener
-    public void handleSubscribeEvent(SessionSubscribeEvent event) {
-        log.info("<==> handleSubscribeEvent: username=" + event.getUser().getName() + ", event=" + event);
-    }
-
-    @EventListener
-    public void handleConnectEvent(SessionConnectEvent event) {
-        log.info("===> handleConnectEvent: username=" + event.getUser().getName() + ", event=" + event);
-    }
-
-    @EventListener
-    public void handleDisconnectEvent(SessionDisconnectEvent event) {
-        log.info("<=== handleDisconnectEvent: username=" + event.getUser().getName() + ", event=" + event);
-    }
+//    @EventListener
+//    public void handleSubscribeEvent(SessionSubscribeEvent event) {
+//        log.info("<==> handleSubscribeEvent: username=" + event.getUser().getName() + ", event=" + event);
+//    }
+//
+//    @EventListener
+//    public void handleConnectEvent(SessionConnectEvent event) {
+//        log.info("===> handleConnectEvent: username=" + event.getUser().getName() + ", event=" + event);
+//    }
+//
+//    @EventListener
+//    public void handleDisconnectEvent(SessionDisconnectEvent event) {
+//        log.info("<=== handleDisconnectEvent: username=" + event.getUser().getName() + ", event=" + event);
+//    }
 }
