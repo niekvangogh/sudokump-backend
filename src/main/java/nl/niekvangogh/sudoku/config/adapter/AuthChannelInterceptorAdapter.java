@@ -26,6 +26,7 @@ public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
             String token = accessor.getFirstNativeHeader("Authorization");
             token = token.split("Bearer ")[1];
 
+
             final UsernamePasswordAuthenticationToken user = webSocketAuthenticatorService.getAuthenticatedOrFail(token);
 
             accessor.setUser(user);

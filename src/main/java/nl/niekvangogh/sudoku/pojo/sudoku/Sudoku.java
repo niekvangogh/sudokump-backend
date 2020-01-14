@@ -43,4 +43,16 @@ public class Sudoku {
         return (int) Math.floor((this.randomGenerator.nextDouble() * num + 1));
     }
 
+    public int[][] toPlayerGrid() {
+        int[][] emptyGrid = new int[size][size];
+
+        for (int x = 0; x < this.getSize(); x++) {
+            for (int y = 0; y < this.getSize(); y++) {
+                emptyGrid[x][y] = this.grid[x][y].getSolution();
+            }
+        }
+
+        return emptyGrid;
+    }
+
 }

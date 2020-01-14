@@ -8,6 +8,7 @@ import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.repository.GameRepository;
 import nl.niekvangogh.sudoku.service.GameManagerService;
+import nl.niekvangogh.sudoku.service.SudokuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,9 @@ public class GameManagerServiceImpl implements GameManagerService {
     @Autowired
     private GameRepository gameRepository;
 
+    @Autowired
+    private SudokuServiceImpl sudokuService;
+
     private final Map<User, CompletableFuture<QueueUpdate>> queued = new HashMap<>();
     private List<Game> games = new ArrayList<>();
 
@@ -34,22 +38,16 @@ public class GameManagerServiceImpl implements GameManagerService {
     public CompletableFuture<QueueUpdate> queuePlayer(User player) {
         CompletableFuture<QueueUpdate> callback = new CompletableFuture<>();
         this.queued.put(player, callback);
-        this.processQueue();
+        this.processQueue(player);
         return callback;
     }
 
-    private void processQueue() {
+    private void processQueue(User user) {
         new Thread(() -> {
-            synchronized (this.queued) {
-                queued.forEach((user, future) -> {
-                    Game game = this.findGame(user);
-                    if (game == null) {
-                        game = this.createGame(Ranking.BRONZE);
-                    }
-                    this.addPlayer(game, user);
-                    future.complete(new QueueUpdate(game.getGameDetails().getId()));
-
-                });
+            Game game = this.findGame(user);
+            this.addPlayer(game, user);
+            if (game.getGameDetails().getUsers().size() == 1) {
+                this.startGame(game);
             }
         }).start();
     }
@@ -72,23 +70,24 @@ public class GameManagerServiceImpl implements GameManagerService {
 
     @Override
     public Game findGame(User user) {
-//        return this.games.stream().filter(game -> game.getGameDetails().getRanking().isIn(user.getRating())).findFirst().orElse(null);
-        return this.games.stream().filter(game -> true).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)).findFirst().orElse(this.createGame(Ranking.BRONZE));
     }
 
     @Override
     public void startGame(Game game) {
         game.getGameDetails().setGameState(GameState.STARTED);
+        this.gameRepository.save(game.getGameDetails());
         this.gameService.onGameStart(game);
     }
 
     @Override
     public Game getGame(User user) {
-        return this.games.stream().filter(game -> game.getGameDetails().getUsers().contains(user)).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getGameDetails().getUsers().stream().anyMatch(gameUser -> gameUser.getId() == user.getId())).findFirst().orElse(null);
     }
 
     @Override
     public void addPlayer(Game game, User user) {
+        this.queued.get(user).complete(new QueueUpdate(game.getGameDetails().getId()));
         this.queued.remove(user);
         game.getGameDetails().getUsers().add(user);
 
