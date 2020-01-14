@@ -39,9 +39,6 @@ import java.util.concurrent.CompletableFuture;
 public class GameController {
 
     @Autowired
-    private SimpMessageSendingOperations messageSendingService;
-
-    @Autowired
     private GameManagerServiceImpl gameManagerService;
 
     @Autowired
@@ -88,14 +85,6 @@ public class GameController {
     @SendToUser("/game/queue/errors")
     public String handleException(Throwable exception) {
         return exception.getMessage();
-    }
-
-
-    private MessageHeaders createHeaders(String sessionId) {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.setSessionId(sessionId);
-        headerAccessor.setLeaveMutable(true);
-        return headerAccessor.getMessageHeaders();
     }
 
 }
