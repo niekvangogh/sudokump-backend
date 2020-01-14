@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @AllArgsConstructor
-public class QueueEnteredResponse {
+public class QueueUpdateResponse {
 
-    private boolean entered;
+    private boolean inQueue;
+
+    private long position;
 }

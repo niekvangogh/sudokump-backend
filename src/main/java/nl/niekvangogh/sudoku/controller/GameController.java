@@ -2,16 +2,16 @@ package nl.niekvangogh.sudoku.controller;
 
 import com.google.gson.Gson;
 import nl.niekvangogh.sudoku.entity.User;
-import nl.niekvangogh.sudoku.pojo.queue.QueueEnteredResponse;
+import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
+import nl.niekvangogh.sudoku.repository.UserRepository;
+import nl.niekvangogh.sudoku.security.CurrentUser;
+import nl.niekvangogh.sudoku.security.UserPrincipal;
 import nl.niekvangogh.sudoku.service.impl.GameManagerServiceImpl;
 import nl.niekvangogh.sudoku.service.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
@@ -32,11 +32,14 @@ public class GameController {
     @Autowired
     private GameManagerServiceImpl gameManagerService;
 
+    @Autowired
+    private UserRepository
+
     @MessageMapping("/game/queue/start")
-    public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) throws Exception {
+    public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
         this.gameManagerService.queuePlayer(new User());
 
-        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", new QueueEnteredResponse(true), this.createHeaders(accessor.getSessionId()));
+        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", new QueueUpdateResponse(true, 1), this.createHeaders(accessor.getSessionId()));
     }
 
     @MessageMapping("/game/queue/cancel")
