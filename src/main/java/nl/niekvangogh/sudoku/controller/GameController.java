@@ -53,12 +53,8 @@ public class GameController {
     @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
         User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
+        this.gameManagerService.queuePlayer(user, accessor.getSessionId());
 
-        CompletableFuture<QueueUpdate> future = this.gameManagerService.queuePlayer(user);
-
-        future.whenComplete((queueUpdate, throwable) -> {
-            this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/queue/status", new QueueUpdateResponse(queueUpdate.getGameId()), this.createHeaders(accessor.getSessionId()));
-        });
     }
 
     @MessageMapping("/game/queue/cancel")

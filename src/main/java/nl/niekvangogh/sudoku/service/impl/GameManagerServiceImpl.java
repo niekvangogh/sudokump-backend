@@ -28,27 +28,19 @@ public class GameManagerServiceImpl implements GameManagerService {
     @Autowired
     private GameRepository gameRepository;
 
-    @Autowired
-    private SudokuServiceImpl sudokuService;
-
-    private final Map<User, CompletableFuture<QueueUpdate>> queued = new HashMap<>();
+    private final Map<User, String> queued = new HashMap<>();
     private List<Game> games = new ArrayList<>();
 
     @Override
-    public CompletableFuture<QueueUpdate> queuePlayer(User player) {
-        CompletableFuture<QueueUpdate> callback = new CompletableFuture<>();
-        this.queued.put(player, callback);
+    public void queuePlayer(User player, String sessionId) {
+        this.queued.put(player, sessionId);
         this.processQueue(player);
-        return callback;
     }
 
     private void processQueue(User user) {
         new Thread(() -> {
             Game game = this.findGame(user);
             this.addPlayer(game, user);
-            if (game.getGameDetails().getUsers().size() == 1) {
-                this.startGame(game);
-            }
         }).start();
     }
 
@@ -87,10 +79,8 @@ public class GameManagerServiceImpl implements GameManagerService {
 
     @Override
     public void addPlayer(Game game, User user) {
-        this.queued.get(user).complete(new QueueUpdate(game.getGameDetails().getId()));
+        this.gameService.onPlayerJoin(game, user, this.queued.get(user));
         this.queued.remove(user);
-
-        this.gameService.onPlayerJoin(game, user);
     }
 
     @Override

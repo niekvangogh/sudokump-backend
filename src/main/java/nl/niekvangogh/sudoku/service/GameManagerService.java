@@ -15,7 +15,7 @@ public interface GameManagerService {
      * @param user the player which is going to be queued
      * @return
      */
-    CompletableFuture<QueueUpdate> queuePlayer(User user);
+    void queuePlayer(User user, String sessionId);
 
 
     /**
