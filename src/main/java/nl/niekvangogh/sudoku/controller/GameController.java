@@ -52,12 +52,7 @@ public class GameController {
 
     @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
-        Optional<User> optionalUser = this.userRepository.findByEmail(principal.getName());
-        if (!optionalUser.isPresent()) {
-            return;
-        }
-        User user = optionalUser.get();
-
+        User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
 
         CompletableFuture<QueueUpdate> future = this.gameManagerService.queuePlayer(user);
 
@@ -73,22 +68,24 @@ public class GameController {
 
     @MessageMapping("/game/sudoku/ready")
     public void onReady(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
-        Optional<User> optionalUser = this.userRepository.findByEmail(principal.getName());
-        if (!optionalUser.isPresent()) {
-            return;
-        }
-        User user = optionalUser.get();
+        User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
+        Game game = this.gameManagerService.getGame(user);
 
-        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(accessor.getSessionId()));
+        this.gameService.onPlayerReady(game, user, true);
+
+//        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(accessor.getSessionId()));
 
     }
 
     @GetMapping("/sudoku")
-    public int[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) {
-        User user = this.userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+    public int[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
+        User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         Game game = this.gameManagerService.getGame(user);
-        return game.getSudoku().toPlayerGrid();
+        if (this.gameManagerService.getGame(user) == null) {
+            throw new Exception("not in game");
+        }
+
+        return game.getGamePlayer(user.getId()).getSudoku().toPlayerGrid();
     }
 
     @MessageExceptionHandler

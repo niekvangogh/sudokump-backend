@@ -1,12 +1,21 @@
 package nl.niekvangogh.sudoku.pojo;
 
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 
-@AllArgsConstructor
+@Getter
+@Setter
 public class GamePlayer {
 
-    private final Sudoku sudoku;
-    private final String connectionId;
 
+    private String sessionId;
+
+    private Sudoku sudoku;
+
+    private boolean ready;
+
+    public GamePlayer(String sessionId) {
+        this.sessionId = sessionId;
+    }
 }

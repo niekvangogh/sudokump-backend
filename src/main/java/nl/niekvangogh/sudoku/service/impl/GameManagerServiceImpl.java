@@ -82,14 +82,13 @@ public class GameManagerServiceImpl implements GameManagerService {
 
     @Override
     public Game getGame(User user) {
-        return this.games.stream().filter(game -> game.getGameDetails().getUsers().stream().anyMatch(gameUser -> gameUser.getId() == user.getId())).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getUserMap().keySet().stream().anyMatch(userId -> userId == user.getId())).findFirst().orElse(null);
     }
 
     @Override
     public void addPlayer(Game game, User user) {
         this.queued.get(user).complete(new QueueUpdate(game.getGameDetails().getId()));
         this.queued.remove(user);
-        game.getGameDetails().getUsers().add(user);
 
         this.gameService.onPlayerJoin(game, user);
     }

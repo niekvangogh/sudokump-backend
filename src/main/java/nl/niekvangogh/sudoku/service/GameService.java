@@ -10,9 +10,11 @@ public interface GameService {
 
     void onGameStart(Game game);
 
-    void onPlayerJoin(Game game, User user);
+    void onPlayerJoin(Game game, User user, String sessionId);
 
     void onPlayerDisconnect(Game game, User user);
+
+    void onPlayerReady(Game game, User user, boolean ready);
 
     void onPlayerSubmitTile(Game game, User user, Tile tile, int value);
 
