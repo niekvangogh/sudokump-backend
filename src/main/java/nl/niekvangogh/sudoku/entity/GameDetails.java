@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class GameDetails extends AbstractBaseEntity {
 
     @OneToMany
     @Getter
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     @Column()
     @Setter
@@ -29,10 +30,11 @@ public class GameDetails extends AbstractBaseEntity {
     @Column()
     @Setter
     @Getter
-    private Ranking ranking;
+    private Ranking ranking = Ranking.BRONZE;
 
     @Column()
     @Setter
     @Getter
     private GameState gameState = GameState.NOT_STARTED;
+
 }

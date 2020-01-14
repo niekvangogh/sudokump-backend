@@ -3,6 +3,9 @@ package nl.niekvangogh.sudoku.service;
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface GameManagerService {
 
@@ -10,8 +13,9 @@ public interface GameManagerService {
      * Queues the player for a game, this process might take a while because it wants to find the best match for all the players
      *
      * @param user the player which is going to be queued
+     * @return
      */
-    void queuePlayer(User user);
+    CompletableFuture<QueueUpdate> queuePlayer(User user);
 
 
     /**

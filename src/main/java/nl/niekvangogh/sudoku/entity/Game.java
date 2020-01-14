@@ -9,13 +9,14 @@ import java.util.Map;
 public class Game {
 
     @Getter
-    private GameDetails gameDetails = new GameDetails();
+    private final GameDetails gameDetails;
 
     @Getter
     private Map<User, GamePlayer> userMap;
 
-    public Game() {
+    public Game(GameDetails gameDetails) {
         this.userMap = new HashMap<>();
+        this.gameDetails = gameDetails;
     }
 
 }
