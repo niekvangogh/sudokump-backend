@@ -9,6 +9,7 @@ import nl.niekvangogh.sudoku.pojo.game.GameSudokuResponse;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
+import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.repository.UserRepository;
 import nl.niekvangogh.sudoku.security.CurrentUser;
 import nl.niekvangogh.sudoku.security.UserPrincipal;
@@ -80,7 +81,7 @@ public class GameController {
     }
 
     @GetMapping("/sudoku")
-    public int[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
+    public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         Game game = this.gameManagerService.getGame(user);
         if (this.gameManagerService.getGame(user) == null) {

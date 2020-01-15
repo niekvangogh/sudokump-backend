@@ -34,8 +34,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public void onGameStart(Game game) {
         Sudoku sudoku = this.sudokuService.generateSudoku(9);
-        this.sudokuService.createPuzzle(sudoku, 15);
         game.setDefaultSudoku(sudoku);
+        this.sudokuService.createPuzzle(sudoku, 15);
         game.getUserMap().forEach((id, gamePlayer) -> gamePlayer.setSudoku(game.getDefaultSudoku()));
     }
 
@@ -57,7 +57,7 @@ public class GameServiceImpl implements GameService {
 
         if (game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
 
-            if (!game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
+            if (!game.getGameDetails().getGameState().equals(GameState.NOT_STARTED) || true) {
                 this.onGameStart(game);
                 game.getUserMap().values().forEach(gamePlayer -> {
                     this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(gamePlayer.getSessionId()));
