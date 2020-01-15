@@ -4,6 +4,7 @@ import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.game.GameReadyResponse;
+import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
@@ -55,10 +56,17 @@ public class GameServiceImpl implements GameService {
         game.getGamePlayer(user.getId()).setReady(ready);
 
         if (game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
-            game.getUserMap().values().forEach(gamePlayer -> {
+
+            if (!game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
+                this.onGameStart(game);
+                game.getUserMap().values().forEach(gamePlayer -> {
+                    this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(gamePlayer.getSessionId()));
+                });
+            } else {
+                GamePlayer gamePlayer = game.getGamePlayer(user.getId());
                 this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(gamePlayer.getSessionId()));
-            });
-            this.onGameStart(game);
+
+            }
         }
     }
 

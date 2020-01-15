@@ -68,8 +68,8 @@ public class GameManagerServiceImpl implements GameManagerService {
     @Override
     public void startGame(Game game) {
         game.getGameDetails().setGameState(GameState.STARTED);
-        this.gameRepository.save(game.getGameDetails());
         this.gameService.onGameStart(game);
+        this.gameRepository.save(game.getGameDetails());
     }
 
     @Override

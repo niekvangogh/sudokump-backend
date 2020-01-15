@@ -65,9 +65,18 @@ public class GameController {
         Game game = this.gameManagerService.getGame(user);
 
         this.gameService.onPlayerReady(game, user, true);
+    }
 
-//        this.messageSendingService.convertAndSendToUser(accessor.getSessionId(), "/game/sudoku/start", new GameReadyResponse(true), this.createHeaders(accessor.getSessionId()));
+    @MessageMapping("/game/sudoku/setTile")
+    public void onPlayerSubmitTile(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
+        User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
+        Game game = this.gameManagerService.getGame(user);
 
+        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
+
+        // get message and parse it to
+
+        this.gameService.onPlayerSubmitTile(game, user, null, 0);
     }
 
     @GetMapping("/sudoku")
