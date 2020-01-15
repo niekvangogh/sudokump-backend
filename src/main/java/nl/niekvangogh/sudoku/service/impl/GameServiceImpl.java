@@ -72,16 +72,17 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void onPlayerSubmitTile(Game game, User user, Tile tile, int value) {
-
+        tile.setGuess(value);
     }
 
     @Override
     public void onPlayerAddPotentialTile(Game game, User user, Tile tile, int value) {
-
+        tile.getPotentialSolutions().add(value);
     }
 
     @Override
     public void onPlayerRemovePotentialTile(Game game, User user, Tile tile, int value) {
+        tile.getPotentialSolutions().remove(value);
 
     }
 

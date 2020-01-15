@@ -1,11 +1,11 @@
 package nl.niekvangogh.sudoku.controller;
 
+import com.google.gson.Gson;
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.GameDetails;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
-import nl.niekvangogh.sudoku.pojo.game.GameReadyResponse;
-import nl.niekvangogh.sudoku.pojo.game.GameSudokuResponse;
+import nl.niekvangogh.sudoku.pojo.game.*;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
@@ -39,6 +39,8 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/game")
 public class GameController {
 
+    private static Gson GSON = new Gson();
+
     @Autowired
     private GameManagerServiceImpl gameManagerService;
 
@@ -68,16 +70,55 @@ public class GameController {
         this.gameService.onPlayerReady(game, user, true);
     }
 
-    @MessageMapping("/game/sudoku/setTile")
-    public void onPlayerSubmitTile(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
+    @MessageMapping("/game/sudoku/setGuess")
+    public void onPlayersetGuess(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
         User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
         Game game = this.gameManagerService.getGame(user);
 
+
+        //todo: check if in game
+
+
+        SubmitGuessRequest submittedGuess = GSON.fromJson(payload, SubmitGuessRequest.class);
+
         Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
+        Tile tile = sudoku.getGrid()[submittedGuess.getX()][submittedGuess.getY()];
 
-        // get message and parse it to
+        this.gameService.onPlayerSubmitTile(game, user, tile, submittedGuess.getGuess());
+    }
 
-        this.gameService.onPlayerSubmitTile(game, user, null, 0);
+    @MessageMapping("/game/sudoku/addPotentialTile")
+    public void addPotentialTile(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
+        User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
+        Game game = this.gameManagerService.getGame(user);
+
+
+        //todo: check if in game
+
+
+        SubmitPotentialGuess submittedGuess = GSON.fromJson(payload, SubmitPotentialGuess.class);
+
+        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
+        Tile tile = sudoku.getGrid()[submittedGuess.getX()][submittedGuess.getY()];
+
+        this.gameService.onPlayerAddPotentialTile(game, user, tile, submittedGuess.getGuess());
+    }
+
+    @MessageMapping("/game/sudoku/removePotentialTile")
+    public void removePotentialTile(Message<Object> message, @Payload String payload, Principal principal, SimpMessageHeaderAccessor accessor) {
+        User user = this.userRepository.findByEmail(principal.getName()).orElseThrow(() -> new ResourceNotFoundException("User", "email", principal.getName()));
+        Game game = this.gameManagerService.getGame(user);
+
+
+        //todo: check if in game
+
+
+        RemovePotentialGuess submittedGuess = GSON.fromJson(payload, RemovePotentialGuess.class);
+
+        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
+        Tile tile = sudoku.getGrid()[submittedGuess.getX()][submittedGuess.getY()];
+
+        this.gameService.onPlayerAddPotentialTile(game, user, tile, submittedGuess.getGuess());
     }
 
     @GetMapping("/sudoku")
