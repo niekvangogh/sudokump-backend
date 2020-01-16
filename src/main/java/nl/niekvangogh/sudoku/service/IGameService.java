@@ -4,7 +4,7 @@ import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 
-public interface GameService {
+public interface IGameService {
 
     void onGameEnd(Game game);
 

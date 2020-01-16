@@ -8,8 +8,7 @@ import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
-import nl.niekvangogh.sudoku.service.GameService;
-import nl.niekvangogh.sudoku.service.SudokuService;
+import nl.niekvangogh.sudoku.service.IGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -18,10 +17,10 @@ import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GameServiceImpl implements GameService {
+public class GameService implements IGameService {
 
     @Autowired
-    private SudokuServiceImpl sudokuService;
+    private SudokuService sudokuService;
 
     @Autowired
     private SimpMessageSendingOperations messageSendingService;

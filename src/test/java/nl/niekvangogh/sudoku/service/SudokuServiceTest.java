@@ -3,7 +3,7 @@ package nl.niekvangogh.sudoku.service;
 import nl.niekvangogh.sudoku.SudokUtils;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
-import nl.niekvangogh.sudoku.service.impl.SudokuServiceImpl;
+import nl.niekvangogh.sudoku.service.impl.SudokuService;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SudokuServiceTest {
 
-    private final SudokuServiceImpl sudokuService;
+    private final SudokuService sudokuService;
 
     public SudokuServiceTest() {
-        this.sudokuService = new SudokuServiceImpl();
+        this.sudokuService = new SudokuService();
     }
 
     @Test

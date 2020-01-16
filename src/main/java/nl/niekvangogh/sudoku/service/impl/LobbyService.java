@@ -3,14 +3,14 @@ package nl.niekvangogh.sudoku.service.impl;
 import nl.niekvangogh.sudoku.entity.ChatMessage;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.lobby.Lobby;
-import nl.niekvangogh.sudoku.service.LobbyService;
+import nl.niekvangogh.sudoku.service.ILobbyService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class LobbyServiceImpl implements LobbyService {
+public class LobbyService implements ILobbyService {
 
     private List<Lobby> lobbies = new ArrayList<>();
 

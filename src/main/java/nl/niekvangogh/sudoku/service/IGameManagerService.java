@@ -7,7 +7,7 @@ import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface GameManagerService {
+public interface IGameManagerService {
 
     /**
      * Queues the player for a game, this process might take a while because it wants to find the best match for all the players

@@ -4,7 +4,7 @@ import nl.niekvangogh.sudoku.entity.ChatMessage;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.lobby.Lobby;
 
-public interface LobbyService {
+public interface ILobbyService {
 
     Lobby createLobby();
 

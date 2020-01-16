@@ -4,7 +4,7 @@ import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
 import nl.niekvangogh.sudoku.repository.UserRepository;
 import nl.niekvangogh.sudoku.security.UserPrincipal;
-import nl.niekvangogh.sudoku.service.UserService;
+import nl.niekvangogh.sudoku.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserService implements IUserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;

@@ -6,7 +6,7 @@ import nl.niekvangogh.sudoku.security.oauth2.CustomOAuth2UserService;
 import nl.niekvangogh.sudoku.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import nl.niekvangogh.sudoku.security.oauth2.OAuth2AuthenticationFailureHandler;
 import nl.niekvangogh.sudoku.security.oauth2.OAuth2AuthenticationSuccessHandler;
-import nl.niekvangogh.sudoku.service.impl.UserServiceImpl;
+import nl.niekvangogh.sudoku.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;

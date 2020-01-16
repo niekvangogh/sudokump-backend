@@ -3,11 +3,11 @@ package nl.niekvangogh.sudoku.service.impl;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
-import nl.niekvangogh.sudoku.service.SudokuService;
+import nl.niekvangogh.sudoku.service.ISudokuService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SudokuServiceImpl implements SudokuService {
+public class SudokuService implements ISudokuService {
 
     @Override
     public Sudoku generateSudoku(int size) {

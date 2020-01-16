@@ -5,10 +5,8 @@ import nl.niekvangogh.sudoku.entity.GameDetails;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
-import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.repository.GameRepository;
-import nl.niekvangogh.sudoku.service.GameManagerService;
-import nl.niekvangogh.sudoku.service.SudokuService;
+import nl.niekvangogh.sudoku.service.IGameManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CompletableFuture;
 
 @Service
-public class GameManagerServiceImpl implements GameManagerService {
+public class GameManagerService implements IGameManagerService {
 
     @Autowired
-    private GameServiceImpl gameService;
+    private GameService gameService;
 
     @Autowired
     private GameRepository gameRepository;

@@ -4,7 +4,7 @@ import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 
-public interface SudokuService {
+public interface ISudokuService {
 
     /**
      * This method generates a filled Sudoku
