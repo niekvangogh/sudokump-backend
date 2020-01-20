@@ -101,7 +101,7 @@ public class GameController {
         Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
         Tile tile = sudoku.getGrid()[removePotentialGuess.getX()][removePotentialGuess.getY()];
 
-        this.gameService.onPlayerAddPotentialTile(game, user, tile, removePotentialGuess.getGuess());
+        this.gameService.onPlayerRemovePotentialTile(game, user, tile, removePotentialGuess.getGuess());
     }
 
     @GetMapping("/sudoku")
