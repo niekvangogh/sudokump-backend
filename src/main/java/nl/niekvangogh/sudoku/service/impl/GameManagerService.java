@@ -8,6 +8,7 @@ import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.repository.GameRepository;
 import nl.niekvangogh.sudoku.service.IGameManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Component
 public class GameManagerService implements IGameManagerService {
 
     @Autowired
@@ -30,6 +32,16 @@ public class GameManagerService implements IGameManagerService {
     @Override
     public void queuePlayer(User player, String sessionId) {
         this.queued.put(player, sessionId);
+
+
+        Game game = this.getGame(player);
+        if (game != null) {
+            game.getGamePlayer(player.getId()).setSessionId(sessionId);
+            this.gameService.onPlayerReady(game, player, true);
+            this.queued.remove(player);
+            return;
+        }
+
         this.processQueue(player);
     }
 
@@ -75,7 +87,9 @@ public class GameManagerService implements IGameManagerService {
 
     @Override
     public void addPlayer(Game game, User user) {
-        this.gameService.onPlayerJoin(game, user, this.queued.get(user));
+        if (game.getGamePlayer(user.getId()) == null) {
+            this.gameService.onPlayerJoin(game, user, this.queued.get(user));
+        }
         this.queued.remove(user);
     }
 

@@ -18,6 +18,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,6 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/game")
 public class GameController {
-
-    private static Gson GSON = new Gson();
 
     @Autowired
     private GameManagerService gameManagerService;
@@ -105,6 +104,7 @@ public class GameController {
     }
 
     @GetMapping("/sudoku")
+    @PreAuthorize("hasRole('USER')")
     public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         Game game = this.gameManagerService.getGame(user);

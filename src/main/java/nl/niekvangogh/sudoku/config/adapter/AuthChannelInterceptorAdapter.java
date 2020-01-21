@@ -1,5 +1,10 @@
 package nl.niekvangogh.sudoku.config.adapter;
 
+import nl.niekvangogh.sudoku.entity.Game;
+import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.repository.UserRepository;
+import nl.niekvangogh.sudoku.service.impl.GameManagerService;
+import nl.niekvangogh.sudoku.service.impl.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -11,12 +16,19 @@ import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Component
 public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
 
     @Autowired
     private WebSocketAuthenticatorService webSocketAuthenticatorService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private GameManagerService gameManagerService;
 
     @Override
     public Message<?> preSend(final Message<?> message, final MessageChannel channel) throws AuthenticationException {

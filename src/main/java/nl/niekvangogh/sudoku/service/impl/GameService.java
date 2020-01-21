@@ -53,6 +53,10 @@ public class GameService implements IGameService {
 
     @Override
     public void onPlayerJoin(Game game, User user, String sessionId) {
+        GamePlayer gamePlayer = game.getUserMap().get(user.getId());
+        if (gamePlayer != null && !gamePlayer.getSessionId().equals(sessionId)) {
+            game.getUserMap().get(user.getId()).setSessionId(sessionId);
+        }
         game.getUserMap().put(user.getId(), new GamePlayer(sessionId, user));
         this.messageSendingService.convertAndSendToUser(sessionId, "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()), this.createHeaders(sessionId));
     }
