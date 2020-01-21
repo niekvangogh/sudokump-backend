@@ -20,7 +20,7 @@ public class Tile {
 
     @Setter
     @Getter
-    private int guess;
+    private int guess = 0;
 
     @Getter
     private List<Integer> potentialSolutions;
@@ -40,5 +40,12 @@ public class Tile {
         this.solution = tile.solution;
         this.guess = tile.guess;
         this.potentialSolutions = new ArrayList<>(tile.potentialSolutions);
+    }
+
+    public int getDisplay() {
+        if (this.solution != 0) {
+            return this.solution;
+        }
+        return this.guess;
     }
 }

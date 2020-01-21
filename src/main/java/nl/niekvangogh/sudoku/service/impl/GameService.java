@@ -43,7 +43,7 @@ public class GameService implements IGameService {
         game.getGameDetails().setGameState(GameState.STARTED);
 
         Sudoku sudoku = this.sudokuService.generateSudoku(9);
-        this.sudokuService.createPuzzle(sudoku, 40);
+        this.sudokuService.createPuzzle(sudoku, 1);
         game.setDefaultSudoku(sudoku);
 
 
@@ -95,6 +95,12 @@ public class GameService implements IGameService {
     @Override
     public void onPlayerSubmitTile(Game game, User user, Tile tile, int value) {
         tile.setGuess(value);
+
+        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
+        if (this.sudokuService.checkIfCompleted(sudoku) && this.sudokuService.checkIfSolved(sudoku)) {
+            //win
+            System.out.println(" Player has won ");
+        }
     }
 
     @Override
@@ -105,6 +111,5 @@ public class GameService implements IGameService {
     @Override
     public void onPlayerRemovePotentialTile(Game game, User user, Tile tile, int value) {
         tile.getPotentialSolutions().remove(value);
-
     }
 }

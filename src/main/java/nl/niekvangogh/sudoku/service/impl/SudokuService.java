@@ -6,6 +6,8 @@ import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.ISudokuService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class SudokuService implements ISudokuService {
 
@@ -67,11 +69,23 @@ public class SudokuService implements ISudokuService {
                 this.isUnusedInBox(sudoku, tile, value);
     }
 
+    public boolean checkIfSafe(Sudoku sudoku, Tile tile) {
+        int display = tile.getDisplay();
+        int guess = tile.getGuess();
+        int solution = tile.getSolution();
+        tile.setGuess(0);
+        tile.setSolution(0);
+        boolean safe = this.checkIfSafe(sudoku, tile, display);
+        tile.setGuess(guess);
+        tile.setSolution(solution);
+        return safe;
+    }
+
     @Override
     public boolean isUnusedInBox(Sudoku sudoku, Tile tile, int value) {
         for (int i = 0; i < sudoku.getSqrt(); i++) {
             for (int j = 0; j < sudoku.getSqrt(); j++) {
-                if (sudoku.getGrid()[(tile.getXPos() / sudoku.getSqrt() * sudoku.getSqrt()) + i][(tile.getYPos() / sudoku.getSqrt() * sudoku.getSqrt()) + j].getSolution() == value) {
+                if (sudoku.getGrid()[(tile.getXPos() / sudoku.getSqrt() * sudoku.getSqrt()) + i][(tile.getYPos() / sudoku.getSqrt() * sudoku.getSqrt()) + j].getDisplay() == value) {
                     return false;
                 }
             }
@@ -82,7 +96,7 @@ public class SudokuService implements ISudokuService {
     @Override
     public boolean isUnusedInCol(Sudoku sudoku, int yPos, int value) {
         for (int i = 0; i < sudoku.getSize(); i++) {
-            if (sudoku.getGrid()[i][yPos].getSolution() == value) {
+            if (sudoku.getGrid()[i][yPos].getDisplay() == value) {
                 return false;
             }
         }
@@ -92,7 +106,7 @@ public class SudokuService implements ISudokuService {
     @Override
     public boolean isUnusedInRow(Sudoku sudoku, int xPos, int value) {
         for (int j = 0; j < sudoku.getSize(); j++) {
-            if (sudoku.getGrid()[xPos][j].getSolution() == value) {
+            if (sudoku.getGrid()[xPos][j].getDisplay() == value) {
                 return false;
             }
         }
@@ -171,5 +185,21 @@ public class SudokuService implements ISudokuService {
     @Override
     public Tile getTile(Sudoku sudoku, int x, int y) {
         return sudoku.getGrid()[x][y];
+    }
+
+
+    public boolean checkIfCompleted(Sudoku sudoku) {
+        for (Tile[] tiles : sudoku.getGrid()) {
+            for (Tile tile : tiles) {
+                if (tile.getDisplay() == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean checkIfSolved(Sudoku sudoku) {
+        return Arrays.stream(sudoku.getGrid()).flatMap(Arrays::stream).allMatch(tile -> this.checkIfSafe(sudoku, tile));
     }
 }
