@@ -24,12 +24,6 @@ public class AuthChannelInterceptorAdapter implements ChannelInterceptor {
     @Autowired
     private WebSocketAuthenticatorService webSocketAuthenticatorService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private GameManagerService gameManagerService;
-
     @Override
     public Message<?> preSend(final Message<?> message, final MessageChannel channel) throws AuthenticationException {
         final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
