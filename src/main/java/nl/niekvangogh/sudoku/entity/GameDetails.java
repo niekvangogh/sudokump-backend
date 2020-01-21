@@ -2,11 +2,8 @@ package nl.niekvangogh.sudoku.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
 import nl.niekvangogh.sudoku.pojo.Ranking;
-import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.ArrayList;

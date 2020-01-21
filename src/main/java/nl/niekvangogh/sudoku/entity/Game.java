@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.HashMap;
 import java.util.Map;

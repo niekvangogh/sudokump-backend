@@ -16,6 +16,11 @@
 
     <properties>
         <java.version>1.8</java.version>
+            <sonar.projectKey>niekvangogh_sudokump-backend</sonar.projectKey>
+            <sonar.organization>niekvangogh</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            <sonar.login>7701a65e842843036c1299f1c6283dd5426ac1d7</sonar.login>
+
     </properties>
 
     <dependencies>
@@ -109,5 +114,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>

@@ -170,7 +170,7 @@ public class SudokuService implements ISudokuService {
             int cellId = sudoku.getRandomGenerator(sudoku.getSize() * sudoku.getSize());
 
             int i = (cellId / sudoku.getSize());
-            int j = cellId % 9;
+            int j = cellId % sudoku.getSqrt();
             if (j != 0) {
                 j = j - 1;
             }

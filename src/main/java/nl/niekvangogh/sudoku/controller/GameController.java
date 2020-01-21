@@ -2,6 +2,8 @@ package nl.niekvangogh.sudoku.controller;
 
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.exception.ApiException;
+import nl.niekvangogh.sudoku.exception.NotInGameException;
 import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.game.UpdateTileRequest;
@@ -12,6 +14,8 @@ import nl.niekvangogh.sudoku.security.CurrentUser;
 import nl.niekvangogh.sudoku.security.UserPrincipal;
 import nl.niekvangogh.sudoku.service.impl.GameManagerService;
 import nl.niekvangogh.sudoku.service.impl.GameService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.messaging.Message;
@@ -28,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/game")
 public class GameController {
+
+    private Logger logger = LoggerFactory.getLogger("GameController");
 
     @Autowired
     private GameManagerService gameManagerService;
@@ -66,16 +72,19 @@ public class GameController {
             case "setGuess":
                 this.gameService.onPlayerSubmitTile(game, user, tile, request.getNumber());
                 break;
+            default:
+                this.logger.warn("UNKNOWN MESSAGE FOUND " + request);
+                break;
         }
     }
 
     @GetMapping("/sudoku")
     @PreAuthorize("hasRole('USER')")
-    public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
+    public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws ApiException {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
         Game game = this.gameManagerService.findGameById(gameId);
-        if (this.gameManagerService.findGameByUser(user) == null) {
-            throw new Exception("not in game");
+        if (game == null || game.getGamePlayer(user.getId()) == null) {
+            throw new NotInGameException(game, user);
         }
         GamePlayer player = game.getGamePlayer(user.getId());
         return player.getSudoku().toPlayerGrid();

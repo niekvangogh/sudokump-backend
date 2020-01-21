@@ -19,10 +19,11 @@ class SudokuServiceTest {
     }
 
     @Test
-    void canGenerateSudokuOf81By81() {
-        Sudoku sudoku = this.sudokuService.generateSudoku(25);
-//        this.sudokuService.createPuzzle(sudoku, 10);
-        SudokUtils.printSudoku(sudoku.getGrid());
+    void canGenerateSudokuSoloSudoku() {
+        long reference = System.nanoTime();
+        Sudoku sudoku = this.sudokuService.generateSudoku(9);
+        long finishm = System.nanoTime();
+        System.out.println(((double) (finishm - reference)));
     }
 
     @Test
