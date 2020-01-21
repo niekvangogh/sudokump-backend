@@ -33,14 +33,14 @@ public class GameManagerService implements IGameManagerService {
     public void queuePlayer(User player, String sessionId) {
         this.queued.put(player, sessionId);
 
-
-        Game game = this.getGame(player);
-        if (game != null) {
-            game.getGamePlayer(player.getId()).setSessionId(sessionId);
-            this.gameService.onPlayerReady(game, player, true);
-            this.queued.remove(player);
-            return;
-        }
+//
+//        Game game = this.getGame(player);
+//        if (game != null) {
+//            game.getGamePlayer(player.getId()).setSessionId(sessionId);
+//            this.gameService.onPlayerReady(game, player, true);
+//            this.queued.remove(player);
+//            return;
+//        }
 
         this.processQueue(player);
     }

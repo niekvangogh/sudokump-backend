@@ -53,12 +53,13 @@ public class GameService implements IGameService {
 
     @Override
     public void onPlayerJoin(Game game, User user, String sessionId) {
-        GamePlayer gamePlayer = game.getUserMap().get(user.getId());
-        if (gamePlayer != null && !gamePlayer.getSessionId().equals(sessionId)) {
-            game.getUserMap().get(user.getId()).setSessionId(sessionId);
-        }
         game.getUserMap().put(user.getId(), new GamePlayer(sessionId, user));
-        this.messageSendingService.convertAndSendToUser(sessionId, "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()), this.createHeaders(sessionId));
+
+        if (game.getUserMap().size() == 2) {
+            game.getUserMap().forEach((id, gamePlayer) -> {
+                this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()), this.createHeaders(gamePlayer.getSessionId()));
+            });
+        }
     }
 
     @Override
@@ -70,15 +71,9 @@ public class GameService implements IGameService {
     public void onPlayerReady(Game game, User user, boolean ready) {
         game.getGamePlayer(user.getId()).setReady(ready);
 
-        if (game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
-
+        if (game.getUserMap().size() == 2 && game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
             if (game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
                 this.onGameStart(game);
-            } else {
-                List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
-                GamePlayer player = game.getGamePlayer(user.getId());
-                this.messageSendingService.convertAndSendToUser(player.getSessionId(), "/game/sudoku/start", new GameStartResponse(true, players), this.createHeaders(player.getSessionId()));
-
             }
         }
     }
