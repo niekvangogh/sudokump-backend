@@ -11,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Component
@@ -33,15 +30,6 @@ public class GameManagerService implements IGameManagerService {
     @Override
     public void queuePlayer(User player) {
         this.queued.add(player);
-
-//
-//        Game game = this.getGame(player);
-//        if (game != null) {
-//            game.getGamePlayer(player.getId()).setSessionId(sessionId);
-//            this.gameService.onPlayerReady(game, player, true);
-//            this.queued.remove(player);
-//            return;
-//        }
 
         this.processQueue(player);
     }
@@ -71,7 +59,14 @@ public class GameManagerService implements IGameManagerService {
 
     @Override
     public Game findGame(User user) {
+        //todo persist
         return this.games.stream().filter(game -> game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)).findFirst().orElse(this.createGame(Ranking.BRONZE));
+    }
+
+    @Override
+    public Game findGameById(long id) {
+        //todo use persistance
+        return this.games.stream().filter(game -> game.getGameDetails().getId() == id).findFirst().orElse(this.createGame(Ranking.BRONZE));
     }
 
     @Override
@@ -82,7 +77,7 @@ public class GameManagerService implements IGameManagerService {
     }
 
     @Override
-    public Game getGame(User user) {
+    public Game findGameByUser(User user) {
         return this.games.stream().filter(game -> game.getUserMap().keySet().stream().anyMatch(userId -> userId == user.getId())).findFirst().orElse(null);
     }
 
@@ -99,5 +94,15 @@ public class GameManagerService implements IGameManagerService {
         game.getGameDetails().getUsers().remove(user);
 
         this.gameService.onPlayerDisconnect(game, user);
+    }
+
+    @Override
+    public void removePlayerFromAllGames(User user) {
+        this.games.stream().filter(game -> game.getGamePlayer(user.getId()) != null).forEach(game -> this.gameService.onPlayerDisconnect(game, user));
+    }
+
+    @Override
+    public boolean isInGame(User user) {
+        return this.games.stream().anyMatch(game -> game.getUserMap().containsKey(user.getId()));
     }
 }

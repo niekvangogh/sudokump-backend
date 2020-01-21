@@ -4,9 +4,7 @@ import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
-import nl.niekvangogh.sudoku.pojo.game.RemovePotentialGuess;
-import nl.niekvangogh.sudoku.pojo.game.SubmitGuessRequest;
-import nl.niekvangogh.sudoku.pojo.game.SubmitPotentialGuess;
+import nl.niekvangogh.sudoku.pojo.game.UpdateTileRequest;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.repository.UserRepository;
@@ -22,7 +20,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,78 +38,43 @@ public class GameController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SimpUserRegistry simpUserRegistry;
-
     @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, User user, SimpMessageHeaderAccessor accessor) {
         this.gameManagerService.queuePlayer(user);
-
-
-        this.simpUserRegistry.getUsers();
-    }
-
-    @MessageMapping("/game/queue/cancel")
-    public void cancelQueue() {
-//        this.gameManagerService.cancelQueue(player);
     }
 
     @MessageMapping("/game/sudoku/ready")
     public void onReady(Message<Object> message, @Payload String payload, User user, SimpMessageHeaderAccessor accessor) {
-        Game game = this.gameManagerService.getGame(user);
-
+        Game game = this.gameManagerService.findGameByUser(user);
         this.gameService.onPlayerReady(game, user, true);
     }
 
-    @MessageMapping("/game/sudoku/setGuess")
-    public void onPlayerSetGuess(Message<Object> message, @Payload SubmitGuessRequest submittedGuess, User user, SimpMessageHeaderAccessor accessor) {
-        Game game = this.gameManagerService.getGame(user);
-
-
-        //todo: check if in game
-
+    @MessageMapping("/game/sudoku/updateTile")
+    public void updateTile(Message<Object> message, @Payload UpdateTileRequest request, User user, SimpMessageHeaderAccessor accessor) {
+        Game game = this.gameManagerService.findGameByUser(user);
 
         Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
-        Tile tile = sudoku.getGrid()[submittedGuess.getX()][submittedGuess.getY()];
-        System.out.println(tile);
+        Tile tile = sudoku.getGrid()[request.getX()][request.getY()];
 
-        this.gameService.onPlayerSubmitTile(game, user, tile, submittedGuess.getGuess());
-    }
-
-    @MessageMapping("/game/sudoku/addPotentialTile")
-    public void addPotentialTile(Message<Object> message, @Payload SubmitPotentialGuess potentialGuess, User user, SimpMessageHeaderAccessor accessor) {
-        Game game = this.gameManagerService.getGame(user);
-
-
-        //todo: check if in game
-
-
-        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
-        Tile tile = sudoku.getGrid()[potentialGuess.getX()][potentialGuess.getY()];
-
-        this.gameService.onPlayerAddPotentialTile(game, user, tile, potentialGuess.getGuess());
-    }
-
-    @MessageMapping("/game/sudoku/removePotentialTile")
-    public void removePotentialTile(Message<Object> message, @Payload RemovePotentialGuess removePotentialGuess, User user, SimpMessageHeaderAccessor accessor) {
-        Game game = this.gameManagerService.getGame(user);
-
-
-        //todo: check if in game
-
-
-        Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
-        Tile tile = sudoku.getGrid()[removePotentialGuess.getX()][removePotentialGuess.getY()];
-
-        this.gameService.onPlayerRemovePotentialTile(game, user, tile, removePotentialGuess.getGuess());
+        switch (request.getMethod()) {
+            case "removePotentialSolution":
+                this.gameService.onPlayerRemovePotentialTile(game, user, tile, request.getNumber());
+                break;
+            case "addPotentialSolution":
+                this.gameService.onPlayerAddPotentialTile(game, user, tile, request.getNumber());
+                break;
+            case "setGuess":
+                this.gameService.onPlayerSubmitTile(game, user, tile, request.getNumber());
+                break;
+        }
     }
 
     @GetMapping("/sudoku")
     @PreAuthorize("hasRole('USER')")
     public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws Exception {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-        Game game = this.gameManagerService.getGame(user);
-        if (this.gameManagerService.getGame(user) == null) {
+        Game game = this.gameManagerService.findGameById(gameId);
+        if (this.gameManagerService.findGameByUser(user) == null) {
             throw new Exception("not in game");
         }
         GamePlayer player = game.getGamePlayer(user.getId());

@@ -6,7 +6,7 @@ import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 
 public interface IGameService {
 
-    void onGameEnd(Game game);
+    void onGameEnd(Game game, User user);
 
     void onGameStart(Game game);
 

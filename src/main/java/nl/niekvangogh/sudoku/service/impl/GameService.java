@@ -6,6 +6,8 @@ import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.PublicUser;
 import nl.niekvangogh.sudoku.pojo.game.GameStartResponse;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
+import nl.niekvangogh.sudoku.pojo.game.PlayerDisconnectResponse;
+import nl.niekvangogh.sudoku.pojo.game.PlayerWinResponse;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
@@ -31,7 +33,16 @@ public class GameService implements IGameService {
     private SimpMessageSendingOperations messageSendingService;
 
     @Override
-    public void onGameEnd(Game game) {
+    public void onGameEnd(Game game, User winner) {
+        if (winner == null) {
+            System.out.println("Game ended without winner");
+            return;
+        }
+        PublicUser publicWinner = new PublicUser(winner);
+
+        game.getUserMap().forEach((aLong, gamePlayer) -> {
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/update", new PlayerWinResponse(publicWinner));
+        });
 
     }
 
@@ -71,6 +82,11 @@ public class GameService implements IGameService {
     @Override
     public void onPlayerDisconnect(Game game, User user) {
         game.getUserMap().remove(user.getId());
+        PublicUser disconnectedUser = new PublicUser(user);
+        game.getUserMap().forEach((id, gamePlayer) -> {
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/update", new PlayerDisconnectResponse(disconnectedUser));
+        });
+
     }
 
     @Override
@@ -98,8 +114,7 @@ public class GameService implements IGameService {
 
         Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
         if (this.sudokuService.checkIfCompleted(sudoku) && this.sudokuService.checkIfSolved(sudoku)) {
-            //win
-            System.out.println(" Player has won ");
+            this.onGameEnd(game, user);
         }
     }
 

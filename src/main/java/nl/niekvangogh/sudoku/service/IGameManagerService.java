@@ -3,9 +3,6 @@ package nl.niekvangogh.sudoku.service;
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
-import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
-
-import java.util.concurrent.CompletableFuture;
 
 public interface IGameManagerService {
 
@@ -41,6 +38,7 @@ public interface IGameManagerService {
      */
     Game findGame(User user);
 
+
     /**
      * Starts the game
      *
@@ -52,7 +50,10 @@ public interface IGameManagerService {
      * @param user the player which is going to be looked for in games
      * @return the game where the player is in, null if it couldn't find the player
      */
-    Game getGame(User user);
+    Game findGameByUser(User user);
+
+    Game findGameById(long id);
+
 
     /**
      * Adds a player to the game, this is the last step of the process of finding a game
@@ -69,4 +70,8 @@ public interface IGameManagerService {
      * @param user the player which is going to be removed
      */
     void removePlayer(Game game, User user);
+
+    void removePlayerFromAllGames(User user);
+
+    boolean isInGame(User user);
 }
