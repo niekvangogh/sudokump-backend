@@ -14,14 +14,6 @@ public class Tile {
     @Getter
     private int yPos;
 
-    public Tile(int xPos, int yPos, int solution) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.solution = solution;
-
-        this.potentialSolutions = new ArrayList<>();
-    }
-
     @Getter
     @Setter
     private int solution = 0;
@@ -32,4 +24,21 @@ public class Tile {
 
     @Getter
     private List<Integer> potentialSolutions;
+
+
+    public Tile(int xPos, int yPos, int solution) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.solution = solution;
+
+        this.potentialSolutions = new ArrayList<>();
+    }
+
+    public Tile(Tile tile) {
+        this.xPos = tile.xPos;
+        this.yPos = tile.yPos;
+        this.solution = tile.solution;
+        this.guess = tile.guess;
+        this.potentialSolutions = new ArrayList<>(tile.potentialSolutions);
+    }
 }

@@ -6,20 +6,17 @@ import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 
 @Getter
-@Setter
 public class GamePlayer {
 
     private final User user;
 
+    @Setter
     private Sudoku sudoku;
 
+    @Setter
     private boolean ready;
 
     public GamePlayer(User user) {
         this.user = user;
-    }
-
-    public void setSudoku(Sudoku sudoku) {
-        this.sudoku = (Sudoku) sudoku.clone();
     }
 }

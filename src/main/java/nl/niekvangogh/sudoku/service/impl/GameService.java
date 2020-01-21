@@ -36,16 +36,20 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public synchronized void onGameStart(Game game) {
+        if (game.getGameDetails().getGameState().equals(GameState.STARTED)) {
+            return;
+        }
+        game.getGameDetails().setGameState(GameState.STARTED);
+
         Sudoku sudoku = this.sudokuService.generateSudoku(9);
+        this.sudokuService.createPuzzle(sudoku, 40);
         game.setDefaultSudoku(sudoku);
 
-        this.sudokuService.createPuzzle(sudoku, 15);
 
         game.getUserMap().forEach((id, gamePlayer) -> {
-            gamePlayer.setSudoku(sudoku);
+            gamePlayer.setSudoku(new Sudoku(game.getDefaultSudoku()));
         });
-        game.getGameDetails().setGameState(GameState.STARTED);
 
         List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
         for (GamePlayer gamePlayer : game.getUserMap().values()) {
@@ -70,7 +74,7 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void onPlayerReady(Game game, User user, boolean ready) {
+    public synchronized void onPlayerReady(Game game, User user, boolean ready) {
         game.getGamePlayer(user.getId()).setReady(ready);
 
         if (!game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
@@ -83,6 +87,7 @@ public class GameService implements IGameService {
         if (game.getUserMap().size() == 2 && game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
             if (game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
                 this.onGameStart(game);
+
             }
         }
     }
@@ -102,12 +107,4 @@ public class GameService implements IGameService {
         tile.getPotentialSolutions().remove(value);
 
     }
-
-    private MessageHeaders createHeaders(String sessionId) {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
-        headerAccessor.setSessionId(sessionId);
-        headerAccessor.setLeaveMutable(true);
-        return headerAccessor.getMessageHeaders();
-    }
-
 }

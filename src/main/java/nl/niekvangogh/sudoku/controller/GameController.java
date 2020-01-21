@@ -3,6 +3,7 @@ package nl.niekvangogh.sudoku.controller;
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
+import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.game.RemovePotentialGuess;
 import nl.niekvangogh.sudoku.pojo.game.SubmitGuessRequest;
 import nl.niekvangogh.sudoku.pojo.game.SubmitPotentialGuess;
@@ -73,6 +74,7 @@ public class GameController {
 
         Sudoku sudoku = game.getGamePlayer(user.getId()).getSudoku();
         Tile tile = sudoku.getGrid()[submittedGuess.getX()][submittedGuess.getY()];
+        System.out.println(tile);
 
         this.gameService.onPlayerSubmitTile(game, user, tile, submittedGuess.getGuess());
     }
@@ -113,8 +115,8 @@ public class GameController {
         if (this.gameManagerService.getGame(user) == null) {
             throw new Exception("not in game");
         }
-
-        return game.getGamePlayer(user.getId()).getSudoku().toPlayerGrid();
+        GamePlayer player = game.getGamePlayer(user.getId());
+        return player.getSudoku().toPlayerGrid();
     }
 
     @MessageExceptionHandler
