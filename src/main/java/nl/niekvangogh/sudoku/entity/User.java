@@ -9,10 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.security.Principal;
 
 @Entity
 @Table
-public class User extends AbstractBaseEntity {
+public class User extends AbstractBaseEntity implements Principal {
 
     @NotBlank
     @Column(unique = true)
@@ -27,7 +28,7 @@ public class User extends AbstractBaseEntity {
     @Getter
     @Setter
     private String email;
-    
+
     @Getter
     @Setter
     private String imageUrl;

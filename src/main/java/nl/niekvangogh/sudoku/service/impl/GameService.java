@@ -47,7 +47,7 @@ public class GameService implements IGameService {
 
         List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
         for (GamePlayer gamePlayer : game.getUserMap().values()) {
-            this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/sudoku/start", new GameStartResponse(true, players), this.createHeaders(gamePlayer.getSessionId()));
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/start", new GameStartResponse(true, players));
         }
     }
 
@@ -57,7 +57,7 @@ public class GameService implements IGameService {
 
         if (game.getUserMap().size() == 2) {
             game.getUserMap().forEach((id, gamePlayer) -> {
-                this.messageSendingService.convertAndSendToUser(gamePlayer.getSessionId(), "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()), this.createHeaders(gamePlayer.getSessionId()));
+                this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()));
             });
         }
     }
