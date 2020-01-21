@@ -8,6 +8,7 @@ import nl.niekvangogh.sudoku.pojo.game.GameStartResponse;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.pojo.game.PlayerDisconnectResponse;
 import nl.niekvangogh.sudoku.pojo.game.PlayerWinResponse;
+import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
@@ -38,12 +39,16 @@ public class GameService implements IGameService {
             System.out.println("Game ended without winner");
             return;
         }
+
+        game.getGameDetails().setGameState(GameState.FINISHED);
+        game.getGameDetails().setWinner(winner);
         PublicUser publicWinner = new PublicUser(winner);
 
-        game.getUserMap().forEach((aLong, gamePlayer) -> {
-            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/update", new PlayerWinResponse(publicWinner));
-        });
+        PlayerWinResponse message = new PlayerWinResponse(publicWinner);
 
+        for (GamePlayer gamePlayer : game.getUserMap().values()) {
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/update", message);
+        }
     }
 
     @Override
@@ -63,8 +68,9 @@ public class GameService implements IGameService {
         });
 
         List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
+        GameStartResponse gameStartResponse = new GameStartResponse(true, players);
         for (GamePlayer gamePlayer : game.getUserMap().values()) {
-            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/start", new GameStartResponse(true, players));
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/start", gameStartResponse);
         }
     }
 
@@ -73,9 +79,10 @@ public class GameService implements IGameService {
         game.getUserMap().put(user.getId(), new GamePlayer(user));
 
         if (game.getUserMap().size() == 2) {
-            game.getUserMap().forEach((id, gamePlayer) -> {
-                this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/queue/status", new QueueUpdateResponse(game.getGameDetails().getId()));
-            });
+            QueueUpdateResponse queueUpdateResponse = new QueueUpdateResponse(game.getGameDetails().getId());
+            for (GamePlayer gamePlayer : game.getUserMap().values()) {
+                this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/queue/status", queueUpdateResponse);
+            }
         }
     }
 
@@ -83,10 +90,10 @@ public class GameService implements IGameService {
     public void onPlayerDisconnect(Game game, User user) {
         game.getUserMap().remove(user.getId());
         PublicUser disconnectedUser = new PublicUser(user);
-        game.getUserMap().forEach((id, gamePlayer) -> {
-            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/update", new PlayerDisconnectResponse(disconnectedUser));
-        });
-
+        PlayerDisconnectResponse playerDisconnectResponse = new PlayerDisconnectResponse(disconnectedUser);
+        for (GamePlayer gamePlayer : game.getUserMap().values()) {
+            this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/update", playerDisconnectResponse);
+        }
     }
 
     @Override
@@ -103,7 +110,6 @@ public class GameService implements IGameService {
         if (game.getUserMap().size() == 2 && game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
             if (game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
                 this.onGameStart(game);
-
             }
         }
     }

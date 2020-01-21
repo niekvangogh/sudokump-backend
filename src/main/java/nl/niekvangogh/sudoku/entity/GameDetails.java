@@ -6,6 +6,7 @@ import nl.niekvangogh.sudoku.entity.AbstractBaseEntity;
 import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,5 +34,10 @@ public class GameDetails extends AbstractBaseEntity {
     @Setter
     @Getter
     private GameState gameState = GameState.NOT_STARTED;
+
+    @Getter
+    @Setter
+    @ManyToOne
+    private User winner;
 
 }

@@ -1,13 +1,18 @@
 package nl.niekvangogh.sudoku.pojo.game;
 
+import lombok.Getter;
 import nl.niekvangogh.sudoku.pojo.PublicUser;
 
-public class PlayerWinResponse extends GameUpdateResponse {
+import java.io.Serializable;
 
+@Getter
+public class PlayerWinResponse implements Serializable {
+
+    private final String event;
     private PublicUser winner;
 
     public PlayerWinResponse(PublicUser winner) {
-        super("playerwin");
+        this.event = "playerwin";
         this.winner = winner;
     }
 }
