@@ -45,7 +45,7 @@ public class GameController {
 
     @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, User user, SimpMessageHeaderAccessor accessor) {
-        this.gameManagerService.queuePlayer(user, accessor.getSessionId());
+        this.gameManagerService.queuePlayer(user);
 
 
         this.simpUserRegistry.getUsers();

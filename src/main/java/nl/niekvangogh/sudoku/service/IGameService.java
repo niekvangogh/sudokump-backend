@@ -10,7 +10,7 @@ public interface IGameService {
 
     void onGameStart(Game game);
 
-    void onPlayerJoin(Game game, User user, String sessionId);
+    void onPlayerJoin(Game game, User user);
 
     void onPlayerDisconnect(Game game, User user);
 

@@ -15,7 +15,7 @@ public interface IGameManagerService {
      * @param user the player which is going to be queued
      * @return
      */
-    void queuePlayer(User user, String sessionId);
+    void queuePlayer(User user);
 
 
     /**

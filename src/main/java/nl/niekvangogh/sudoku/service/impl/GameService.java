@@ -42,7 +42,9 @@ public class GameService implements IGameService {
 
         this.sudokuService.createPuzzle(sudoku, 15);
 
-        game.getUserMap().forEach((id, gamePlayer) -> gamePlayer.setSudoku(game.getDefaultSudoku()));
+        game.getUserMap().forEach((id, gamePlayer) -> {
+            gamePlayer.setSudoku(sudoku);
+        });
         game.getGameDetails().setGameState(GameState.STARTED);
 
         List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
@@ -52,8 +54,8 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public void onPlayerJoin(Game game, User user, String sessionId) {
-        game.getUserMap().put(user.getId(), new GamePlayer(sessionId, user));
+    public void onPlayerJoin(Game game, User user) {
+        game.getUserMap().put(user.getId(), new GamePlayer(user));
 
         if (game.getUserMap().size() == 2) {
             game.getUserMap().forEach((id, gamePlayer) -> {
@@ -70,6 +72,13 @@ public class GameService implements IGameService {
     @Override
     public void onPlayerReady(Game game, User user, boolean ready) {
         game.getGamePlayer(user.getId()).setReady(ready);
+
+        if (!game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {
+            List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
+
+            this.messageSendingService.convertAndSendToUser(user.getName(), "/game/sudoku/start", new GameStartResponse(true, players));
+            return;
+        }
 
         if (game.getUserMap().size() == 2 && game.getUserMap().values().stream().allMatch(GamePlayer::isReady)) {
             if (game.getGameDetails().getGameState().equals(GameState.NOT_STARTED)) {

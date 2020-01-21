@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +27,12 @@ public class GameManagerService implements IGameManagerService {
     @Autowired
     private GameRepository gameRepository;
 
-    private final Map<User, String> queued = new HashMap<>();
+    private final ArrayList<User> queued = new ArrayList<>();
     private List<Game> games = new ArrayList<>();
 
     @Override
-    public void queuePlayer(User player, String sessionId) {
-        this.queued.put(player, sessionId);
+    public void queuePlayer(User player) {
+        this.queued.add(player);
 
 //
 //        Game game = this.getGame(player);
@@ -88,7 +89,7 @@ public class GameManagerService implements IGameManagerService {
     @Override
     public void addPlayer(Game game, User user) {
         if (game.getGamePlayer(user.getId()) == null) {
-            this.gameService.onPlayerJoin(game, user, this.queued.get(user));
+            this.gameService.onPlayerJoin(game, user);
         }
         this.queued.remove(user);
     }

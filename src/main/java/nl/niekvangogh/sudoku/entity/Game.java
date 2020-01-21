@@ -17,8 +17,8 @@ public class Game {
     @Getter
     private Map<Long, GamePlayer> userMap;
 
-    @Getter
     @Setter
+    @Getter
     private Sudoku defaultSudoku;
 
     public Game(GameDetails gameDetails) {

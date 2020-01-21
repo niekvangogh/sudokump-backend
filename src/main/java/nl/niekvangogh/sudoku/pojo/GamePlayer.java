@@ -11,14 +11,15 @@ public class GamePlayer {
 
     private final User user;
 
-    private String sessionId;
-
     private Sudoku sudoku;
 
     private boolean ready;
 
-    public GamePlayer(String sessionId, User user) {
-        this.sessionId = sessionId;
+    public GamePlayer(User user) {
         this.user = user;
+    }
+
+    public void setSudoku(Sudoku sudoku) {
+        this.sudoku = (Sudoku) sudoku.clone();
     }
 }

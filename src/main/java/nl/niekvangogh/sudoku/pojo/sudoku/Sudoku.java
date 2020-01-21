@@ -1,10 +1,12 @@
 package nl.niekvangogh.sudoku.pojo.sudoku;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.util.Random;
 
-public class Sudoku {
+public class Sudoku implements Cloneable {
 
     private final Random randomGenerator;
 
@@ -15,21 +17,27 @@ public class Sudoku {
     private final int sqrt;
 
     @Getter
+    private final long seed;
+
+    @Setter
+    @Getter
     private Tile[][] grid;
 
     public Sudoku(long seed, int size) {
+        this.seed = seed;
         this.randomGenerator = new Random(seed);
-        this.grid = new Tile[size][size];
 
         this.size = size;
         this.sqrt = (int) Math.sqrt(size);
 
+        this.grid = new Tile[size][size];
         for (int x = 0; x < this.getSize(); x++) {
             for (int y = 0; y < this.getSize(); y++) {
                 this.grid[x][y] = new Tile(x, y, 0);
             }
         }
     }
+
 
     public Sudoku() {
         this(new Random().nextLong(), 9);
@@ -47,12 +55,20 @@ public class Sudoku {
         Tile[][] emptyGrid = new Tile[size][size];
 
         for (int x = 0; x < this.getSize(); x++) {
-            for (int y = 0; y < this.getSize(); y++) {
-                emptyGrid[x][y] = this.grid[x][y];
+            if (this.getSize() >= 0) {
+                System.arraycopy(this.grid[x], 0, emptyGrid[x], 0, this.getSize());
             }
         }
 
         return emptyGrid;
+    }
+
+
+    @Override
+    public Object clone() {
+        Sudoku sudoku = new Sudoku(this.seed, this.size);
+        sudoku.setGrid(this.grid);
+        return sudoku;
     }
 
 }
