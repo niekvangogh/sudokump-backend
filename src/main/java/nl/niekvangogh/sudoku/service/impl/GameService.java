@@ -54,7 +54,7 @@ public class GameService implements IGameService {
         game.getGameDetails().setGameState(GameState.STARTED);
 
         Sudoku sudoku = this.sudokuService.generateSudoku(9);
-        this.sudokuService.createPuzzle(sudoku, 1);
+        this.sudokuService.createPuzzle(sudoku, 20);
         game.setDefaultSudoku(sudoku);
 
 
@@ -83,6 +83,9 @@ public class GameService implements IGameService {
 
     @Override
     public void onPlayerDisconnect(Game game, User user) {
+        if (true) {
+            return;
+        }
         game.getUserMap().remove(user.getId());
         PublicUser disconnectedUser = new PublicUser(user);
         PlayerDisconnectResponse playerDisconnectResponse = new PlayerDisconnectResponse(disconnectedUser);
