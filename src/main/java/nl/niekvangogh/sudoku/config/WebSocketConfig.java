@@ -6,27 +6,20 @@ import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
 import nl.niekvangogh.sudoku.repository.UserRepository;
 import nl.niekvangogh.sudoku.security.TokenProvider;
 import nl.niekvangogh.sudoku.service.impl.GameManagerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.lang.invoke.MethodHandles;
-
 
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
-    private static Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -61,7 +54,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @EventListener
     public void onSocketDisconnected(SessionDisconnectEvent event) {
-        StompHeaderAccessor sha = StompHeaderAccessor.wrap(event.getMessage());
+        if (event.getUser() == null) {
+            return;
+        }
         User user = this.userRepository.findByName(event.getUser().getName()).orElseThrow(() -> new ResourceNotFoundException("User", "Name", event.getUser().getName()));
 
         if (this.gameManagerService.isInGame(user)) {
