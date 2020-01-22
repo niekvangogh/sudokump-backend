@@ -78,7 +78,7 @@ public class GameManagerService implements IGameManagerService {
 
     @Override
     public Game findGameByUser(User user) {
-        return this.games.stream().filter(game -> game.getUserMap().keySet().stream().anyMatch(userId -> userId == user.getId())).findFirst().orElse(null);
+        return this.games.stream().filter(game -> game.getUserMap().keySet().stream().anyMatch(userId -> userId == user.getId())).reduce((game, game2) -> game2).orElse(null);
     }
 
     @Override

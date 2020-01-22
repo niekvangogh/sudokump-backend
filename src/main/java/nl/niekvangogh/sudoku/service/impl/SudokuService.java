@@ -167,7 +167,7 @@ public class SudokuService implements ISudokuService {
     @Override
     public void createPuzzle(Sudoku sudoku, int count) {
         while (count != 0) {
-            int cellId = sudoku.getRandomGenerator(sudoku.getSize() * sudoku.getSize());
+            int cellId = sudoku.getRandomGenerator(sudoku.getSize() * sudoku.getSize()) - 1;
 
             int i = (cellId / sudoku.getSize());
             int j = cellId % 9;

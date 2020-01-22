@@ -11,6 +11,7 @@ import nl.niekvangogh.sudoku.pojo.game.PlayerWinResponse;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
+import nl.niekvangogh.sudoku.repository.GameRepository;
 import nl.niekvangogh.sudoku.service.IGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -27,6 +28,9 @@ public class GameService implements IGameService {
 
     @Autowired
     private SimpMessageSendingOperations messageSendingService;
+
+    @Autowired
+    private GameRepository gameRepository;
 
     @Override
     public void onGameEnd(Game game, User winner) {
@@ -53,20 +57,32 @@ public class GameService implements IGameService {
         }
         game.getGameDetails().setGameState(GameState.STARTED);
 
-        Sudoku sudoku = this.sudokuService.generateSudoku(9);
-        this.sudokuService.createPuzzle(sudoku, 20);
-        game.setDefaultSudoku(sudoku);
-
-
-        game.getUserMap().forEach((id, gamePlayer) -> {
-            gamePlayer.setSudoku(new Sudoku(game.getDefaultSudoku()));
-        });
 
         List<PublicUser> players = game.getUserMap().values().stream().map(gamePlayer -> new PublicUser(gamePlayer.getUser())).collect(Collectors.toList());
         GameStartResponse gameStartResponse = new GameStartResponse(true, players);
         for (GamePlayer gamePlayer : game.getUserMap().values()) {
             this.messageSendingService.convertAndSendToUser(gamePlayer.getUser().getName(), "/game/sudoku/start", gameStartResponse);
         }
+
+        game.getGameDetails().setGameState(GameState.STARTED);
+        this.gameRepository.save(game.getGameDetails());
+
+        boolean working = false;
+        while (!working) {
+            try {
+                Sudoku sudoku = this.sudokuService.generateSudoku(9);
+                this.sudokuService.createPuzzle(sudoku, 5);
+                game.setDefaultSudoku(sudoku);
+
+
+                game.getUserMap().forEach((id, gamePlayer) -> {
+                    gamePlayer.setSudoku(new Sudoku(game.getDefaultSudoku()));
+                });
+                working = true;
+            } catch (Exception e) {
+            }
+        }
+
     }
 
     @Override

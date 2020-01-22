@@ -14,6 +14,7 @@ import nl.niekvangogh.sudoku.security.CurrentUser;
 import nl.niekvangogh.sudoku.security.UserPrincipal;
 import nl.niekvangogh.sudoku.service.impl.GameManagerService;
 import nl.niekvangogh.sudoku.service.impl.GameService;
+import nl.niekvangogh.sudoku.service.impl.SudokuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,9 @@ public class GameController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SudokuService sudokuService;
 
     @MessageMapping("/game/queue/start")
     public void startQueue(Message<Object> message, @Payload String payload, User user, SimpMessageHeaderAccessor accessor) {
@@ -82,11 +86,13 @@ public class GameController {
     @PreAuthorize("hasRole('USER')")
     public Tile[][] getSudoku(@CurrentUser UserPrincipal userPrincipal, @Param("gameId") int gameId) throws ApiException {
         User user = this.userRepository.findById(userPrincipal.getId()).orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-        Game game = this.gameManagerService.findGameById(gameId);
+        Game game = this.gameManagerService.findGameByUser(user);
         if (game == null || game.getGamePlayer(user.getId()) == null) {
             throw new NotInGameException(game, user);
         }
         GamePlayer player = game.getGamePlayer(user.getId());
+
+
         return player.getSudoku().toPlayerGrid();
     }
 
