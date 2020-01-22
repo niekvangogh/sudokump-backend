@@ -73,7 +73,7 @@ public class GameController {
                 this.gameService.onPlayerSubmitTile(game, user, tile, request.getNumber());
                 break;
             default:
-                this.logger.warn("UNKNOWN MESSAGE FOUND " + request);
+                this.logger.warn(String.format("UNKNOWN MESSAGE FOUND %s", request));
                 break;
         }
     }
