@@ -2,8 +2,8 @@ package nl.niekvangogh.sudoku.service.impl;
 
 import nl.niekvangogh.sudoku.entity.Game;
 import nl.niekvangogh.sudoku.entity.GameDetails;
-import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.pojo.Ranking;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.repository.GameRepository;
 import nl.niekvangogh.sudoku.service.IGameManagerService;
@@ -50,7 +50,7 @@ public class GameManagerService implements IGameManagerService {
     public Game createGame(Ranking ranking) {
         GameDetails gameDetails = new GameDetails();
         gameDetails.setRanking(ranking);
-        gameDetails.setSeed((long) (Math.random() * 1000));
+        gameDetails.setSeed((long) (Math.random() * 100000));
         gameDetails = this.gameRepository.save(gameDetails);
         Game game = new Game(gameDetails);
         this.games.add(game);

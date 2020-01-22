@@ -1,6 +1,7 @@
 package nl.niekvangogh.sudoku.config.adapter;
 
 import nl.niekvangogh.sudoku.entity.User;
+import nl.niekvangogh.sudoku.exception.ResourceNotFoundException;
 import nl.niekvangogh.sudoku.repository.UserRepository;
 import nl.niekvangogh.sudoku.security.TokenProvider;
 import org.springframework.messaging.Message;
@@ -38,7 +39,7 @@ public class UserInterceptor extends ChannelInterceptorAdapter {
 
                     if (this.tokenProvider.validateToken(jwtToken)) {
                         Long userId = this.tokenProvider.getUserIdFromToken(jwtToken);
-                        User user = this.userRepository.findById(userId).get();
+                        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId.toString()));
                         accessor.setUser(user);
                     }
                 }

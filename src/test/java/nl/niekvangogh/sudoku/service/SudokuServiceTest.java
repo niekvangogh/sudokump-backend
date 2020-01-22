@@ -1,6 +1,5 @@
 package nl.niekvangogh.sudoku.service;
 
-import nl.niekvangogh.sudoku.SudokUtils;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.impl.SudokuService;
@@ -55,7 +54,6 @@ class SudokuServiceTest {
     void fillDiagonal_GivenEmptySudoku_ShouldFillWithSafeNumbers() {
         Sudoku sudoku = new Sudoku();
         this.sudokuService.fillDiagonal(sudoku);
-        SudokUtils.printSudoku(sudoku.getGrid());
 
         for (int i = 0; i < sudoku.getSqrt(); i++) {
             Tile[] box = this.sudokuService.getBox(sudoku, i * sudoku.getSqrt(), i * sudoku.getSqrt());
