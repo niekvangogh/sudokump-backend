@@ -1,6 +1,6 @@
 package nl.niekvangogh.sudoku.service.impl;
 
-import nl.niekvangogh.sudoku.entity.Game;
+import nl.niekvangogh.sudoku.pojo.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.GamePlayer;
 import nl.niekvangogh.sudoku.pojo.PublicUser;
@@ -8,19 +8,14 @@ import nl.niekvangogh.sudoku.pojo.game.GameStartResponse;
 import nl.niekvangogh.sudoku.pojo.game.GameState;
 import nl.niekvangogh.sudoku.pojo.game.PlayerDisconnectResponse;
 import nl.niekvangogh.sudoku.pojo.game.PlayerWinResponse;
-import nl.niekvangogh.sudoku.pojo.queue.QueueUpdate;
 import nl.niekvangogh.sudoku.pojo.queue.QueueUpdateResponse;
 import nl.niekvangogh.sudoku.pojo.sudoku.Sudoku;
 import nl.niekvangogh.sudoku.pojo.sudoku.Tile;
 import nl.niekvangogh.sudoku.service.IGameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

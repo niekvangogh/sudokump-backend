@@ -1,6 +1,6 @@
 package nl.niekvangogh.sudoku.controller;
 
-import nl.niekvangogh.sudoku.entity.Game;
+import nl.niekvangogh.sudoku.pojo.Game;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.exception.ApiException;
 import nl.niekvangogh.sudoku.exception.NotInGameException;

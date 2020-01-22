@@ -1,7 +1,7 @@
 package nl.niekvangogh.sudoku.exception;
 
 import lombok.AllArgsConstructor;
-import nl.niekvangogh.sudoku.entity.Game;
+import nl.niekvangogh.sudoku.pojo.Game;
 import nl.niekvangogh.sudoku.entity.User;
 
 @AllArgsConstructor

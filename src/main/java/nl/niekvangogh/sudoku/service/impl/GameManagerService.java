@@ -1,6 +1,6 @@
 package nl.niekvangogh.sudoku.service.impl;
 
-import nl.niekvangogh.sudoku.entity.Game;
+import nl.niekvangogh.sudoku.pojo.Game;
 import nl.niekvangogh.sudoku.entity.GameDetails;
 import nl.niekvangogh.sudoku.entity.User;
 import nl.niekvangogh.sudoku.pojo.Ranking;
